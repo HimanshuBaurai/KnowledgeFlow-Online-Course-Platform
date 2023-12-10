@@ -9,8 +9,9 @@
     filter: drop-shadow(0 40px 10px rgba(0, 0, 0, 0.3));
     animation: vectorAnimation 1s infinite ease-in-out alternate;
     border-radius: 10px;
-    opacity: 0.8;  
+    opacity: 0.8;
 }
+
 // .home{
 //     width: 100%;
 // }
@@ -35,28 +36,41 @@
         &:hover {
             color: rgb(255, 221, 0);
         }
-    } 
+    }
 }
 
-.container-2{
+.container-2 {
     height: 100vh;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    >video{
+
+    >video {
         border: 1px solid rgba(0, 0, 0, 0.18);
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.18);
         width: 60%;
         border-radius: 10px;
         outline: none;
     }
+
     @media screen and (max-width:600px) {
         height: unset;
         padding: 4rem 0;
-        >video{
+
+        >video {
             width: 100%;
         }
+    }
+}
+
+.course {
+    width: 15rem;
+    margin-bottom: 1rem;
+    transition: all 0.5s;
+
+    &:hover {
+        transform:translate(0, -10px);
     }
 }
 
