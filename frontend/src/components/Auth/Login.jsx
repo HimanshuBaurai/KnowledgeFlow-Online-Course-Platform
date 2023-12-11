@@ -1,6 +1,6 @@
 import { Box, Button, Container, FormLabel, Heading, Input, VStack } from '@chakra-ui/react'
 import React, { useState } from 'react'
-import { Form, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -40,7 +40,7 @@ const Login = () => {
 
                     <Box>
                         <Link
-                            to='/forgotpassword'>
+                            to='/forgetpassword'>
                             <Button fontSize={'sm'} variant={'link'} children={'Forgot Password?'} />
                         </Link>
                     </Box>
