@@ -69,7 +69,7 @@ const Courses = () => {
 
 
     return (
-        <Container minH={'95vh'} maxW="container.lg" paddingY={'8'}>
+        <Container minH={'95vh'} maxW='container.lg' paddingY={'8'}>
             <Heading children="All Courses" m={'8'} />
 
             <Input
