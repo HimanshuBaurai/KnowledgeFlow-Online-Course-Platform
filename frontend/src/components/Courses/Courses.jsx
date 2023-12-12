@@ -47,8 +47,7 @@ const Course = ({ views, title, imageSrc, id, addToPlaylistHandler, creator, des
             />
 
             <Stack
-                direction={['column', 'row']}
-                // spacing={'4'}
+                direction={['column', 'row']} 
                 alignItems={['center', 'flex-start']}
             >
                 <Link to={`/course/${id}`} >

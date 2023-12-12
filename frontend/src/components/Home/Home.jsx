@@ -51,7 +51,7 @@ const Home = () => {
             </Box>
             <div className='container-2'>
                 <video 
-                autoPlay 
+                autoPlay  
                 controls 
                 controlsList='nodownload nofullscreen noremoteplayback'
                 disablePictureInPicture
