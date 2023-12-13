@@ -15,14 +15,20 @@ import Subscribe from './components/Payments/Subscribe.jsx';
 import NotFound from './components/Layout/NotFound/NotFound.jsx';
 import PaymentSuccess from './components/Payments/PaymentSuccess.jsx';
 import PaymentFail from './components/Payments/PaymentFail.jsx';
+import CoursePage from './components/CoursePage/CoursePage.jsx';
 
 function App() {
+  window.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+  });//disables right click
+
   return (
     <Router>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/courses" element={<Courses />} />
+        <Route path="/course/:id" element={<CoursePage />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/forgetpassword' element={<ForgetPassword />} />
