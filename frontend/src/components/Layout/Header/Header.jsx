@@ -26,7 +26,7 @@ const LinkButton = ({ url = '/', title = 'Home', onClose }) => (
 
 const Header = ({ isAuthenticated = false, user }) => {
   //testing isAuthenticated
-  //isAuthenticated=true;
+  isAuthenticated=true;
   //testing user
   // user={role:'admin'};
 
