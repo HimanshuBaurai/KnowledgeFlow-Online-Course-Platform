@@ -28,7 +28,7 @@ const Header = ({ isAuthenticated = false, user }) => {
   //testing isAuthenticated
   isAuthenticated=true;
   //testing user
-  // user={role:'admin'};
+  user={role:'admin'};
 
 
   const { isOpen, onOpen, onClose } = useDisclosure();

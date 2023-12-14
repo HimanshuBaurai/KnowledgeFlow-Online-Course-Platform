@@ -19,6 +19,10 @@ import CoursePage from './components/CoursePage/CoursePage.jsx';
 import Profile from './components/Profile/Profile.jsx';
 import ChangePassword from './components/Profile/ChangePassword.jsx';
 import UpdateProfile from './components/Profile/UpdateProfile.jsx';
+import DashBoard from './components/Admin/DashBoard/DashBoard.jsx';
+import AdminCourses from './components/Admin/AdminCourses/AdminCourses.jsx';
+import CreateCourse from './components/Admin/CreateCourse/CreateCourse.jsx';
+import Users from './components/Admin/Users/Users.jsx';
 
 function App() {
   window.addEventListener('contextmenu', (e) => {
@@ -46,6 +50,11 @@ function App() {
         <Route path='/profile' element={<Profile />} />
         <Route path='/changepassword' element={<ChangePassword />} />
         <Route path='/updateprofile' element={<UpdateProfile />} />
+        {/* admin routes  */}
+        <Route path='/admin/dashboard' element={<DashBoard />} />
+        <Route path='/admin/courses' element={<AdminCourses />} />
+        <Route path='/admin/createcourse' element={<CreateCourse />} />
+        <Route path='/admin/users' element={<Users />} />
       </Routes>
       <Footer />
     </Router>
