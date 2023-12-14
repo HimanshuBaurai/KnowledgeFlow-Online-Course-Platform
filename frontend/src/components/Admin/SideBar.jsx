@@ -18,7 +18,7 @@ const LinkButton = ({ url, Icon, text, active }) => {
 const SideBar = () => {
     const location = useLocation();//to keep a track of at which address we are currently at 
     return (
-        <VStack spacing={'8'} p={'16'} boxShadow={'-2px 0 10px rgba(107,70,193,0.5'}>
+        <VStack spacing={'8'} p={'16'} boxShadow={'-2px 0 10px rgba(107,70,193,0.5)'}>
             <LinkButton url={'dashboard'} Icon={RiDashboardFill} text={'Dashboard'} active={location.pathname === '/admin/dashboard'} />
             <LinkButton url={'createcourse'} Icon={RiAddCircleFill} text={'Create Course'} active={location.pathname === '/admin/createcourse'} />
             <LinkButton url={'courses'} Icon={RiEyeFill} text={'Courses'} active={location.pathname === '/admin/courses'} />
