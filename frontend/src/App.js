@@ -17,6 +17,8 @@ import PaymentSuccess from './components/Payments/PaymentSuccess.jsx';
 import PaymentFail from './components/Payments/PaymentFail.jsx';
 import CoursePage from './components/CoursePage/CoursePage.jsx';
 import Profile from './components/Profile/Profile.jsx';
+import ChangePassword from './components/Profile/ChangePassword.jsx';
+import UpdateProfile from './components/Profile/UpdateProfile.jsx';
 
 function App() {
   window.addEventListener('contextmenu', (e) => {
@@ -42,6 +44,8 @@ function App() {
         <Route path='/paymentsuccess' element={<PaymentSuccess />} />
         <Route path='/paymentfail' element={<PaymentFail />} />
         <Route path='/profile' element={<Profile />} />
+        <Route path='/changepassword' element={<ChangePassword />} />
+        <Route path='/updateprofile' element={<UpdateProfile />} />
       </Routes>
       <Footer />
     </Router>
