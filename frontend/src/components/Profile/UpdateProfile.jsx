@@ -1,7 +1,7 @@
 import { Button, Container, Heading, Input, VStack } from '@chakra-ui/react'
 import React, { useState } from 'react'
 
-const UpdatePassword = () => {
+const UpdateProfile = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   return (
@@ -30,4 +30,4 @@ const UpdatePassword = () => {
   )
 }
 
-export default UpdatePassword
+export default UpdateProfile
