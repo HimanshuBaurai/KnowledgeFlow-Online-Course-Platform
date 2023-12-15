@@ -25,9 +25,9 @@ import CreateCourse from './components/Admin/CreateCourse/CreateCourse.jsx';
 import Users from './components/Admin/Users/Users.jsx';
 
 function App() {
-  window.addEventListener('contextmenu', (e) => {
-    e.preventDefault();
-  });//disables right click
+  // window.addEventListener('contextmenu', (e) => {
+  //   e.preventDefault();
+  // });//disables right click
 
   return (
     <Router>

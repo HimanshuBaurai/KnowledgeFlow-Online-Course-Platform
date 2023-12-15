@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom'
 
 const Footer = () => {
     return (
-        <Box bg={'blackAlpha.800'} padding={'4'} minH={'10vh'} >
+        <Box bg={'blackAlpha.800'} padding={'4'} minH={'10vh'}>
             <Stack direction={['column', 'row']} justifyContent={['center', 'space-evenly']} alignItems={'center'} >
                 <VStack alignItems={['center', 'flex-start']} width={'full'}>
-                    <Heading children='All Rights Reserved' color={'white'} />
+                    <Heading children='All Rights Reserved' color={'white'}/>
                     <Heading
                         fontFamily={'body'}
                         size={'sm'}
