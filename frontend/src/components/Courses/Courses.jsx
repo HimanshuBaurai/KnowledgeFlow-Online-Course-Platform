@@ -101,7 +101,7 @@ const Courses = () => {
                     id={1}
                     title={'Web Development'}
                     description={'Learn web development from top-rated instructors. Learn how to build a website, web design, and the most relevant web development frameworks used today in the tech industry'}
-                    imageSrc={'https://media.geeksforgeeks.org/wp-content/cdn-uploads/20221222184908/web-development1.png'}
+                    imageSrc={'https://th.bing.com/th/id/OIP.l8kGzfQsw5dPihvVhPO-5wHaHa?w=680&h=680&rs=1&pid=ImgDetMain'}
                     views={1000}
                     creator={'John Doe'}
                     lectureCount={10}

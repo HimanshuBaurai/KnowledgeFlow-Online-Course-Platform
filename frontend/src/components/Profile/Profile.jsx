@@ -79,7 +79,7 @@ const Profile = () => {
         playlist: [
             {
                 course: 'vgvbvb',//denotes course id
-                poster: 'https://source.unsplash.com/random',
+                poster: 'https://th.bing.com/th/id/OIP.l8kGzfQsw5dPihvVhPO-5wHaHa?w=680&h=680&rs=1&pid=ImgDetMain',
             }
         ]
     }
@@ -173,7 +173,7 @@ const Profile = () => {
                                     />
                                     <HStack>
                                         <Link to={`/course/${item.course}`}>
-                                            <Button variant={'ghost'} colorScheme={'yellow'} children='Wtach Now' />
+                                            <Button variant={'ghost'} colorScheme={'yellow'} children='Watch Now' />
                                         </Link>
                                         <Button variant={'ghost'} colorScheme={'red'} onClick={() => removeFromPlaylistHandler(item.course)}>
                                             <RiDeleteBin7Fill />
