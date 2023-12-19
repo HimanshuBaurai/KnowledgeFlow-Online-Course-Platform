@@ -1,3 +1,4 @@
+import { catchAsyncError } from '../middlewares/catchAsyncError.js';
 import { Course } from '../models/Course.js';//import model
 
 //when we use async, its a good practice to use try catch block, but to use it everytime is not a good practice
@@ -6,12 +7,14 @@ import { Course } from '../models/Course.js';//import model
 
 
 //get all courses
-export const getAllCourses = async (req, res, next) => {
+export const getAllCourses = catchAsyncError(
+    async (req, res, next) => {
 
-    const courses = await Course.find();//find all courses in db
+        const courses = await Course.find();//find all courses in db
 
-    res.status(200).json({
-        success: true,
-        courses
-    }); //send response
-};
+        res.status(200).json({
+            success: true,
+            courses
+        }); //send response
+    }
+);
