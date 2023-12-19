@@ -1,6 +1,7 @@
 # Dependency directories
 /node_modules
 /frontend/node_modules
+/server/node_modules
 
 # Build output
 /build
