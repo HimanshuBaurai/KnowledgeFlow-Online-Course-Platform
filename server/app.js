@@ -6,6 +6,9 @@ config({
 });
 
 const app = express();
+//using middlewares
+app.use(express.json());//to parse json data from req.body
+app.use(express.urlencoded({ extended: true }));//to parse url encoded data from req.body
 
 //importing and using routes
 import course from './routes/courseRoutes.js';

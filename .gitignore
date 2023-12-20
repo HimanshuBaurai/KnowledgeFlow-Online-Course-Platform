@@ -10,6 +10,9 @@
 # Environment variables
 **/*.env
 /server/config/config.env
+/config.env
+/config/config.env
+
 .env.local
 .env.development.local
 .env.test.local
