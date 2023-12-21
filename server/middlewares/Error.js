@@ -4,8 +4,7 @@ const ErrorMiddleware = (err, req, res, next) => {
     err.message = err.message || 'Internal Server Error';//if no message is set, set it to 'Internal Server Error'
     res.status(err.statusCode).json({
         success: false,
-        message: err.message,
-        error: err.stack//stack trace that shows where the error occured
+        message: err.message
     });
 };
 
