@@ -83,3 +83,70 @@ export const getMyProfile = catchAsyncError(
         res.status(200).json({ success: true, user })
     }
 )
+
+export const changePassword = catchAsyncError(
+    async (req, res, next) => {
+        const { oldPassword, newPassword } = req.body;
+        if(!oldPassword || !newPassword){
+            return next(new ErrorHandler("Please enter all fields",400))
+        }
+
+        //we want it to be accessed by only who is already authenticated
+        //thus we will utilize one more middleware isAuthenticated
+
+        const user = await User.findById(req.user._id).select('+password')// req.user is set in the protect middleware
+
+        if (!user) return next(new ErrorHandler("User not found", 404))// this is to check if the user exists or not
+
+        const isMatch = await user.comparePassword(oldPassword);
+        if (!isMatch) return next(new ErrorHandler("Incorrect password", 401))
+
+        user.password = newPassword;
+        await user.save();//no need to hash again as it is done in the pre save hook in the schema itself
+
+        res.status(200).json({ success: true, message: "Password changed successfully" })
+
+        // sendToken(res, user, "Password changed successfully", 200)
+    }
+)
+
+export const updateProfile = catchAsyncError(
+    async (req, res, next) => {
+        const { name, email } = req.body;
+        //we want it to be accessed by only who is already authenticated
+        //thus we will utilize one more middleware isAuthenticated
+        
+        const user = await User.findById(req.user._id)// req.user is set in the protect middleware
+        if (!user) return next(new ErrorHandler("User not found", 404))// this is to check if the user exists or not
+        
+        if(name) user.name=name;
+        if(email) user.email=email;
+        await user.save();
+
+        res.status(200).json({ success: true, message: "Profile updated successfully" })
+
+        // sendToken(res, user, "Password changed successfully", 200)
+    }
+)
+
+export const updateProfilePicture = catchAsyncError(
+    async (req, res, next) => {
+        //cloudinary TODO
+        
+
+
+        // const { avatar } = req.body;
+        // //we want it to be accessed by only who is already authenticated
+        // //thus we will utilize one more middleware isAuthenticated
+        
+        // const user = await User.findById(req.user._id)// req.user is set in the protect middleware
+        // if (!user) return next(new ErrorHandler("User not found", 404))// this is to check if the user exists or not
+        
+        // user.avatar=avatar;
+        // await user.save();
+
+        res.status(200).json({ success: true, message: "Profile picture updated successfully" })
+
+        // sendToken(res, user, "Password changed successfully", 200)
+    }
+)
