@@ -1,7 +1,9 @@
 import { catchAsyncError } from "../middlewares/catchAsyncError.js";
 import { User } from "../models/User.js";
 import ErrorHandler from "../utils/errorHandler.js";
+import { sendEmail } from "../utils/sendEmail.js";
 import { sendToken } from "../utils/sendToken.js";
+import crypto from 'crypto';
 
 export const register = catchAsyncError(
     async (req, res, next) => {
@@ -60,7 +62,7 @@ export const login = catchAsyncError(
 
         //res.status(200).cookie('token',token,{ expires: new Date(Date.now() + 30*24*60*60*1000),httpOnly:true}).json({ success: true, token, user })
         //would be used several times, thus we would be making a function for this in utils folder
-        sendToken(res, user, `Welcome Back ${user.name}`, 200) //201 is the status code for created
+        sendToken(res, `Welcome Back ${user.name}`, 200) //201 is the status code for created
     }
 )
 
@@ -87,8 +89,8 @@ export const getMyProfile = catchAsyncError(
 export const changePassword = catchAsyncError(
     async (req, res, next) => {
         const { oldPassword, newPassword } = req.body;
-        if(!oldPassword || !newPassword){
-            return next(new ErrorHandler("Please enter all fields",400))
+        if (!oldPassword || !newPassword) {
+            return next(new ErrorHandler("Please enter all fields", 400))
         }
 
         //we want it to be accessed by only who is already authenticated
@@ -115,12 +117,12 @@ export const updateProfile = catchAsyncError(
         const { name, email } = req.body;
         //we want it to be accessed by only who is already authenticated
         //thus we will utilize one more middleware isAuthenticated
-        
+
         const user = await User.findById(req.user._id)// req.user is set in the protect middleware
         if (!user) return next(new ErrorHandler("User not found", 404))// this is to check if the user exists or not
-        
-        if(name) user.name=name;
-        if(email) user.email=email;
+
+        if (name) user.name = name;
+        if (email) user.email = email;
         await user.save();
 
         res.status(200).json({ success: true, message: "Profile updated successfully" })
@@ -132,21 +134,61 @@ export const updateProfile = catchAsyncError(
 export const updateProfilePicture = catchAsyncError(
     async (req, res, next) => {
         //cloudinary TODO
-        
+
 
 
         // const { avatar } = req.body;
         // //we want it to be accessed by only who is already authenticated
         // //thus we will utilize one more middleware isAuthenticated
-        
+
         // const user = await User.findById(req.user._id)// req.user is set in the protect middleware
         // if (!user) return next(new ErrorHandler("User not found", 404))// this is to check if the user exists or not
-        
+
         // user.avatar=avatar;
         // await user.save();
 
         res.status(200).json({ success: true, message: "Profile picture updated successfully" })
 
         // sendToken(res, user, "Password changed successfully", 200)
+    }
+)
+
+export const forgetPassword = catchAsyncError(
+    async (req, res, next) => {
+        const { email } = req.body;
+        if (!email) {
+            return next(new ErrorHandler("Please enter all fields", 400))
+        }
+
+        const user = await User.findOne({ email })
+
+        if (!user) return next(new ErrorHandler("User not found", 404))// this is to check if the user exists or not
+
+        const resetToken = await user.getResetPasswordToken();
+
+        const url = `${process.env.FRONTEND_URL}/resetpassword/${resetToken}`;
+        const message = `Click on the link to reset your password. ${url}. \n\nIf you have not requested this email, then ignore it.`;
+        await sendEmail(user.email, `KnowledgeFlow Password Recovery`, message);
+
+
+        await user.save({ validateBeforeSave: false }); // we are not validating the user before saving as we are not updating any field, we are just saving the token and expire time
+        res.status(200).json({ success: true, message: "Email sent successfully" })
+    }
+)
+
+export const resetPassword = catchAsyncError(
+    async (req, res, next) => { 
+        
+        const { token } = req.params;
+        const resetPasswordToken = crypto.createHash('sha256').update(token).digest('hex');
+        const user = await User.findOne({ resetPasswordToken, resetPasswordExpire: { $gt: Date.now() } })// req.user is set in the protect middleware
+        if (!user) return next(new ErrorHandler("Invalid token or token expired", 404))// this is to check if the user exists or not
+
+        user.password = req.body.password;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+        await user.save();
+        
+        res.status(200).json({ success: true, message: "Password updated successfully" })
     }
 )
