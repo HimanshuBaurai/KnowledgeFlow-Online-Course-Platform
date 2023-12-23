@@ -1,10 +1,13 @@
 import { catchAsyncError } from "../middlewares/catchAsyncError.js";
+import { Course } from "../models/Course.js";
 import { User } from "../models/User.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import { sendEmail } from "../utils/sendEmail.js";
 import { sendToken } from "../utils/sendToken.js";
 import crypto from 'crypto';
 
+
+//register user => /api/v1/register
 export const register = catchAsyncError(
     async (req, res, next) => {
         const { name, email, password } = req.body;
@@ -43,7 +46,7 @@ export const register = catchAsyncError(
     }
 )
 
-
+//login user => /api/v1/login
 export const login = catchAsyncError(
     async (req, res, next) => {
         const { email, password } = req.body;
@@ -62,18 +65,18 @@ export const login = catchAsyncError(
 
         //res.status(200).cookie('token',token,{ expires: new Date(Date.now() + 30*24*60*60*1000),httpOnly:true}).json({ success: true, token, user })
         //would be used several times, thus we would be making a function for this in utils folder
-        sendToken(res, `Welcome Back ${user.name}`, 200) //201 is the status code for created
+        sendToken(res, user, `Welcome Back ${user.name}`, 200) //201 is the status code for created
     }
 )
 
-
+//logout user => /api/v1/logout
 export const logout = catchAsyncError(
     async (req, res, next) => {
         res.status(200).cookie('token', null, { expires: new Date(Date.now()) }).json({ success: true, message: "logged out" })
     }
 )
 
-
+//get currently logged in user details => /api/v1/me
 export const getMyProfile = catchAsyncError(
     async (req, res, next) => {
         //we want it to be accessed by only who is already authenticated
@@ -86,6 +89,7 @@ export const getMyProfile = catchAsyncError(
     }
 )
 
+//update password => /api/v1/password/update
 export const changePassword = catchAsyncError(
     async (req, res, next) => {
         const { oldPassword, newPassword } = req.body;
@@ -112,6 +116,8 @@ export const changePassword = catchAsyncError(
     }
 )
 
+
+//update profile 
 export const updateProfile = catchAsyncError(
     async (req, res, next) => {
         const { name, email } = req.body;
@@ -131,6 +137,7 @@ export const updateProfile = catchAsyncError(
     }
 )
 
+//update profile picture  
 export const updateProfilePicture = catchAsyncError(
     async (req, res, next) => {
         //cloudinary TODO
@@ -153,6 +160,7 @@ export const updateProfilePicture = catchAsyncError(
     }
 )
 
+//forgot password
 export const forgetPassword = catchAsyncError(
     async (req, res, next) => {
         const { email } = req.body;
@@ -176,9 +184,10 @@ export const forgetPassword = catchAsyncError(
     }
 )
 
+//reset password
 export const resetPassword = catchAsyncError(
-    async (req, res, next) => { 
-        
+    async (req, res, next) => {
+
         const { token } = req.params;
         const resetPasswordToken = crypto.createHash('sha256').update(token).digest('hex');
         const user = await User.findOne({ resetPasswordToken, resetPasswordExpire: { $gt: Date.now() } })// req.user is set in the protect middleware
@@ -188,7 +197,51 @@ export const resetPassword = catchAsyncError(
         user.resetPasswordToken = undefined;
         user.resetPasswordExpire = undefined;
         await user.save();
-        
+
         res.status(200).json({ success: true, message: "Password updated successfully" })
+    }
+)
+
+//add to playlist
+export const addToPlaylist = catchAsyncError(
+    async (req, res, next) => {
+        //we want it to be accessed by only who is already authenticated
+        //thus we will utilize one more middleware isAuthenticated
+
+        const user = await User.findById(req.user._id)// req.user is set in the protect middleware
+        if (!user) return next(new ErrorHandler("User not found", 404))// this is to check if the user exists or not
+
+        const course = await Course.findById(req.body.id);
+        if (!course) return next(new ErrorHandler("Course not found", 404))// this is to check if the course exists or not
+
+        const isPresent = user.playlist.find((item) => item.course.toString() === course._id.toString());
+        if (isPresent) return next(new ErrorHandler("Course already present in playlist", 409))
+
+        user.playlist.push({ course: course._id, poster: course.poster.url });
+        await user.save();
+
+        res.status(200).json({ success: true, message: "Course added to playlist successfully" })
+    }
+)
+
+//remove from playlist
+export const removeFromPlaylist = catchAsyncError(
+    async (req, res, next) => { 
+        //we want it to be accessed by only who is already authenticated
+        //thus we will utilize one more middleware isAuthenticated
+
+        const user = await User.findById(req.user._id)// req.user is set in the protect middleware
+        if (!user) return next(new ErrorHandler("User not found", 404))// this is to check if the user exists or not
+
+        const course = await Course.findById(req.query.id);//better approach rather than sending id in body as it is a delete request
+        if (!course) return next(new ErrorHandler("Course not found", 404))// this is to check if the course exists or not
+
+        const isPresent = user.playlist.find((item) => item.course.toString() === course._id.toString());
+        if (!isPresent) return next(new ErrorHandler("Course not present in playlist", 404))
+
+        user.playlist = user.playlist.filter((item) => item.course.toString() !== course._id.toString());
+        await user.save();
+
+        res.status(200).json({ success: true, message: "Course removed from playlist successfully" })
     }
 )
