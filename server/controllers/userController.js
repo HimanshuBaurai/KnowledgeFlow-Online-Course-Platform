@@ -1,41 +1,39 @@
 import { catchAsyncError } from "../middlewares/catchAsyncError.js";
 import { Course } from "../models/Course.js";
 import { User } from "../models/User.js";
+import getDataUri from "../utils/dataUri.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import { sendEmail } from "../utils/sendEmail.js";
 import { sendToken } from "../utils/sendToken.js";
 import crypto from 'crypto';
+import cloudinary from 'cloudinary';
 
 
 //register user => /api/v1/register
 export const register = catchAsyncError(
     async (req, res, next) => {
         const { name, email, password } = req.body;
-        //const file=req.file
+        const file = req.file//for avatar image
 
-        if (!name || !email || !password) {
+        if (!name || !email || !password || !file) {
             return next(new ErrorHandler("please enter all fields", 400))
         }
+
+        const fileUri = getDataUri(file)
+        const mycloud = await cloudinary.v2.uploader.upload(fileUri.content)
 
         let user = await User.findOne({ email })
         if (user) {
             return next(new ErrorHandler("user already exists", 409))
         }
         else {
-            //upload file on cloudinary
-            //const result=await cloudinary.v2.uploader.upload(file.path,{
-            //    folder:'avatars',
-            //    width:150,
-            //    crop:'scale'
-            //})
-
             user = await User.create({
                 name,
                 email,
                 password,
                 avatar: {
-                    public_id: 'temp',
-                    url: 'temp url'
+                    public_id: mycloud.public_id,
+                    url: mycloud.secure_url
                 }
             })
         }
@@ -50,7 +48,6 @@ export const register = catchAsyncError(
 export const login = catchAsyncError(
     async (req, res, next) => {
         const { email, password } = req.body;
-        //const file=req.file
 
         if (!email || !password) {
             return next(new ErrorHandler("please enter all fields", 400))
@@ -63,7 +60,6 @@ export const login = catchAsyncError(
         const isMatch = await user.comparePassword(password);
         if (!isMatch) return next(new ErrorHandler("Incorrect email or password", 401))
 
-        //res.status(200).cookie('token',token,{ expires: new Date(Date.now() + 30*24*60*60*1000),httpOnly:true}).json({ success: true, token, user })
         //would be used several times, thus we would be making a function for this in utils folder
         sendToken(res, user, `Welcome Back ${user.name}`, 200) //201 is the status code for created
     }
@@ -132,8 +128,6 @@ export const updateProfile = catchAsyncError(
         await user.save();
 
         res.status(200).json({ success: true, message: "Profile updated successfully" })
-
-        // sendToken(res, user, "Password changed successfully", 200)
     }
 )
 
@@ -141,22 +135,22 @@ export const updateProfile = catchAsyncError(
 export const updateProfilePicture = catchAsyncError(
     async (req, res, next) => {
         //cloudinary TODO
+        const user = await User.findById(req.user._id)// req.user is set in the protect middleware
+        const file = req.file//for avatar image
+        const fileUri = getDataUri(file)
+        const mycloud = await cloudinary.v2.uploader.upload(fileUri.content)
 
+        //delete previous image from cloudinary
+        await cloudinary.v2.uploader.destroy(user.avatar.public_id);
 
+        user.avatar = {
+            public_id: mycloud.public_id,
+            url: mycloud.secure_url
+        }
 
-        // const { avatar } = req.body;
-        // //we want it to be accessed by only who is already authenticated
-        // //thus we will utilize one more middleware isAuthenticated
-
-        // const user = await User.findById(req.user._id)// req.user is set in the protect middleware
-        // if (!user) return next(new ErrorHandler("User not found", 404))// this is to check if the user exists or not
-
-        // user.avatar=avatar;
-        // await user.save();
+        await user.save();
 
         res.status(200).json({ success: true, message: "Profile picture updated successfully" })
-
-        // sendToken(res, user, "Password changed successfully", 200)
     }
 )
 
@@ -226,7 +220,7 @@ export const addToPlaylist = catchAsyncError(
 
 //remove from playlist
 export const removeFromPlaylist = catchAsyncError(
-    async (req, res, next) => { 
+    async (req, res, next) => {
         //we want it to be accessed by only who is already authenticated
         //thus we will utilize one more middleware isAuthenticated
 
