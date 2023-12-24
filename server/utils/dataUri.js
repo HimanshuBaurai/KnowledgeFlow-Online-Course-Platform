@@ -1,5 +1,5 @@
 import DataUriParser from 'datauri/parser.js';
-import path, { extname } from 'path';
+import path from 'path';
 
 //this function takes a file as input and returns its uri
 const getDataUri = (file) => {

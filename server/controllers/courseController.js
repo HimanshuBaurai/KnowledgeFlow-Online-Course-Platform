@@ -77,7 +77,7 @@ export const getCourseLectures = catchAsyncError(
     }
 );
 
-//add course lecture
+//add course lecture, max video size 100mb, as using cloudinary free plan
 export const addLecture = catchAsyncError(
     async (req, res, next) => {
 
@@ -94,13 +94,16 @@ export const addLecture = catchAsyncError(
         }
 
         // const file = req.file;//get file from req as blob, we want its uri
+        const file = req.file;//get file from req as blob, we want its uri
+        const fileUri = getDataUri(file);//get uri of file
+        const mycloud = await cloudinary.v2.uploader.upload(fileUri.content, { resource_type: "video" });//upload file to cloudinary, and get its public id and url
 
         const lecture = {
             title,
             description,
             video: {
-                public_id: 'temp',//replace with cloudinary public id
-                url: 'temp',//replace with cloudinary url, that you  gget for a file you uploaded on cloudinary
+                public_id: mycloud.public_id,//replace with cloudinary public id
+                url: mycloud.secure_url,//replace with cloudinary url, that you  gget for a file you uploaded on cloudinary
             }
         }
 
@@ -114,6 +117,57 @@ export const addLecture = catchAsyncError(
         res.status(200).json({
             success: true,
             message: "lecture added successfully into course"
+        }); //send response
+    }
+);
+
+//delete course
+export const deleteCourse = catchAsyncError(
+    async (req, res, next) => {
+
+        const course = await Course.findById(req.params.id);//find course by id
+        if (!course) {
+            return next(new ErrorHandler('Course not found', 404));
+        }
+
+        await cloudinary.v2.uploader.destroy(course.poster.public_id);//delete poster from cloudinary
+        for (let i = 0; i < course.lectures.length; i++) {
+            await cloudinary.v2.uploader.destroy(course.lectures[i].video.public_id, { resource_type: "video" });//delete all videos from cloudinary
+        }
+
+        await course.deleteOne();//delete course from db
+
+        res.status(200).json({
+            success: true,
+            message: "course deleted successfully"
+        }); //send response
+    }
+);
+
+//delete lecture
+export const deleteLecture = catchAsyncError(
+    async (req, res, next) => {
+        const { courseId, lectureId } = req.query;//get courseId and lectureId from query params
+
+        const course = await Course.findById(courseId);//find course by id
+        if (!course) {
+            return next(new ErrorHandler('Course not found', 404));
+        }
+
+        const lecture = course.lectures.find(lecture => lecture._id.toString() === lectureId);//find lecture by id
+        if (!lecture) {
+            return next(new ErrorHandler('Lecture not found', 404));
+        }
+
+        await cloudinary.v2.uploader.destroy(lecture.video.public_id, { resource_type: "video" });//delete video from cloudinary
+
+        course.lectures = course.lectures.filter(lecture => lecture._id.toString() !== lectureId.toString());//remove lecture from lectures array
+        course.numOfVideos = course.lectures.length;//decrement numOfVideos by 1, as we deleted a video
+        await course.save({ validateBeforeSave: false });//save course, we dont want to validate before save, as we are not updating any field, we are just pushing a lecture to lectures array
+
+        res.status(200).json({
+            success: true,
+            message: "lecture deleted successfully"
         }); //send response
     }
 );
