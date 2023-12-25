@@ -84,6 +84,21 @@ export const getMyProfile = catchAsyncError(
         res.status(200).json({ success: true, user })
     }
 )
+//delete my profile
+export const deleteMyProfile = catchAsyncError(
+    async (req, res, next) => {
+        const user = await User.findById(req.user._id);
+        if (!user) return next(new ErrorHandler("User not found", 404))// this is to check if the user exists or not
+
+        await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+        //cancel subscriptions TODO
+        await user.deleteOne();
+
+        res.status(200).cookie("token", null, {
+            expires: new Date(Date.now()),
+        }).json({ success: true, message: "User deleted successfully" })
+    }
+)
 
 //update password => /api/v1/password/update
 export const changePassword = catchAsyncError(
@@ -237,5 +252,41 @@ export const removeFromPlaylist = catchAsyncError(
         await user.save();
 
         res.status(200).json({ success: true, message: "Course removed from playlist successfully" })
+    }
+)
+
+//admin controllers
+//get all users
+export const getAllUsers = catchAsyncError(
+    async (req, res, next) => {
+        const users = await User.find();
+        res.status(200).json({ success: true, users })
+    }
+)
+//update user role
+export const updateUserRole = catchAsyncError(
+    async (req, res, next) => {
+        const user = await User.findById(req.params.id);
+        if (!user) return next(new ErrorHandler("User not found", 404))// this is to check if the user exists or not
+
+        if (user.role === "admin") user.role = "user";
+        else user.role = "admin";
+
+        await user.save();
+
+        res.status(200).json({ success: true, message: "User role updated successfully" })
+    }
+)
+//delete user
+export const deleteUser = catchAsyncError(
+    async (req, res, next) => {
+        const user = await User.findById(req.params.id);
+        if (!user) return next(new ErrorHandler("User not found", 404))// this is to check if the user exists or not
+
+        await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+        //cancel subscriptions TODO
+        await user.deleteOne();
+
+        res.status(200).json({ success: true, message: "User deleted successfully" })
     }
 )

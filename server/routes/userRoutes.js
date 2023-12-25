@@ -1,6 +1,6 @@
 import express from 'express';
-import { addToPlaylist, changePassword, forgetPassword, getMyProfile, login, logout, register, removeFromPlaylist, resetPassword, updateProfile, updateProfilePicture } from '../controllers/userController.js';
-import { isAuthenticated } from '../middlewares/auth.js';
+import { addToPlaylist, changePassword, deleteMyProfile, deleteUser, forgetPassword, getAllUsers, getMyProfile, login, logout, register, removeFromPlaylist, resetPassword, updateProfile, updateProfilePicture, updateUserRole } from '../controllers/userController.js';
+import { authorizedAdmin, isAuthenticated } from '../middlewares/auth.js';
 import singleUpload from '../middlewares/multer.js';
 
 const router = express.Router();
@@ -13,6 +13,8 @@ router.route('/login').post(login);
 router.route('/logout').get(logout);
 //my profile
 router.route('/me').get(isAuthenticated, getMyProfile);//isAuthenticated ensures that the user is logged in
+//delete my profile
+router.route('/me').delete(isAuthenticated, deleteMyProfile);//isAuthenticated ensures that the user is logged in
 //change password
 router.route('/changepassword').put(isAuthenticated, changePassword);//isAuthenticated ensures that the user is logged in
 //update profile
@@ -27,5 +29,13 @@ router.route('/resetpassword/:token').put(resetPassword);
 router.route('/addtoplaylist/').post(isAuthenticated, addToPlaylist);//isAuthenticated ensures that the user is logged in
 //remove from playlist
 router.route('/removefromplaylist').delete(isAuthenticated, removeFromPlaylist);//isAuthenticated ensures that the user is logged in
+
+//admin routes
+//get all users
+router.route('/admin/users').get(isAuthenticated, authorizedAdmin, getAllUsers);//isAuthenticated ensures that the user is logged in, authorizedAdmin ensures that the user is admin
+//updating role
+router.route('/admin/user/:id')
+    .put(isAuthenticated, authorizedAdmin, updateUserRole)
+    .delete(isAuthenticated, authorizedAdmin, deleteUser);//isAuthenticated ensures that the user is logged in, authorizedAdmin ensures that the user is admin
 
 export default router;
