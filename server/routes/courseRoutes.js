@@ -1,7 +1,7 @@
 import express from 'express';
 import { addLecture, createCourse, deleteCourse, deleteLecture, getAllCourses, getCourseLectures } from '../controllers/courseController.js';
 import singleUpload from '../middlewares/multer.js';
-import { authorizedAdmin, isAuthenticated } from '../middlewares/auth.js';
+import { authorizedAdmin, authorizedSubscribers, isAuthenticated } from '../middlewares/auth.js';
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ router.route('/createcourse').post(isAuthenticated, authorizedAdmin, singleUploa
 
 //add lecture, delete course, get course details
 router.route('/course/:id')
-    .get(isAuthenticated, getCourseLectures)
+    .get(isAuthenticated,authorizedSubscribers, getCourseLectures)
     .post(isAuthenticated, authorizedAdmin,singleUpload, addLecture)
     .delete(isAuthenticated,authorizedAdmin,deleteCourse);//only admin can add lectures
 
