@@ -26,7 +26,6 @@ nodeCron.schedule('0 0 0 1 * *', async () => {
   await Stats.create({}); //we will create a new document in db, and mongoose will automatically add createdAt field
 });
 
-const server = app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT, () => {
   console.log(`Server listening on port ${process.env.PORT}`);
-});
-export default server;
+}); 
