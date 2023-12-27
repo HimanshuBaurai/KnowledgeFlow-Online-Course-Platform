@@ -14,7 +14,20 @@ import cloudinary from 'cloudinary';
 export const getAllCourses = catchAsyncError(
     async (req, res, next) => {
 
-        const courses = await Course.find().select("-lectures");//find all courses in db, excluding lectures, as we dont want to send lectures data to client, we would only be showing it to the premium memmbers
+        //we will be passing keyword and category in query params, so we will get them from req.query
+        const keyword = req.query.keyword || "";//if keyword is not present in query params, then we will set it to empty string
+        const category = req.query.category || "";//if category is not present in query params, then we will set it to empty string
+
+        const courses = await Course.find({
+            title: {
+                $regex: keyword,//find all courses in db, whose title contains keyword
+                $options: "i" //case insensitive
+            },
+            category: {
+                $regex: category,//find all courses in db, whose category contains category
+                $options: "i" //case insensitive
+            }
+        }).select("-lectures");//find all courses in db, excluding lectures, as we dont want to send lectures data to client, we would only be showing it to the premium memmbers
 
         res.status(200).json({
             success: true,
@@ -174,7 +187,7 @@ export const deleteLecture = catchAsyncError(
 );
 
 Course.watch().on('change', async () => {
-    const stats = await Stats.findOne({}).sort({ createdAt: "desc" }).limit(1); // we will get the last 1 stats
+    const stats = await Stats.find({}).sort({ createdAt: "desc" }).limit(1); // we will get the last 1 stats
 
     const courses = await Course.find();//find all courses in db
     let totalViews = 0;
