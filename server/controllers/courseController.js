@@ -1,5 +1,6 @@
 import { catchAsyncError } from '../middlewares/catchAsyncError.js';
 import { Course } from '../models/Course.js';//import model
+import { Stats } from '../models/Stats.js';
 import getDataUri from '../utils/dataUri.js';
 import ErrorHandler from '../utils/errorHandler.js';
 import cloudinary from 'cloudinary';
@@ -171,3 +172,17 @@ export const deleteLecture = catchAsyncError(
         }); //send response
     }
 );
+
+Course.watch().on('change', async () => {
+    const stats = await Stats.findOne({}).sort({ createdAt: "desc" }).limit(1); // we will get the last 1 stats
+
+    const courses = await Course.find();//find all courses in db
+    let totalViews = 0;
+    for (let i = 0; i < courses.length; i++) {
+        totalViews += courses[i].views;
+    }
+
+    stats[0].views = totalViews;
+    stats[0].createdAt = new Date(Date.now());
+    await stats[0].save({ validateBeforeSave: false });//save stats, we dont want to validate before save, as we are not updating any field, we are just incrementing views
+});

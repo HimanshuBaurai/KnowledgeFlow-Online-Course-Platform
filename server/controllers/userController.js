@@ -7,6 +7,7 @@ import { sendEmail } from "../utils/sendEmail.js";
 import { sendToken } from "../utils/sendToken.js";
 import crypto from 'crypto';
 import cloudinary from 'cloudinary';
+import { Stats } from "../models/Stats.js";
 
 
 //register user => /api/v1/register
@@ -290,3 +291,16 @@ export const deleteUser = catchAsyncError(
         res.status(200).json({ success: true, message: "User deleted successfully" })
     }
 )
+
+//watcher, whenever user updated/changed, this function will run, it is predefined in mongoose
+User.watch().on('change', async (data) => {
+    const stats = await Stats.find().sort({ createdAt: "desc" }).limit(1);
+
+    const subscription = await User.find({ "subscription.status": "active" });
+    stats[0].subscription = subscription.length;
+    stats[0].users = await User.countDocuments();
+    stats[0].createdAt = Date.now();
+    // stats[0].views , will be made to be updated in course constrollers, as views increases when someone watches a course
+
+    await stats[0].save();//we are saving the stats in db
+}) 
