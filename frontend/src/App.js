@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Home from '../src/components/Home/Home.jsx'
 import Header from './components/Layout/Header/Header.jsx';
@@ -23,15 +23,39 @@ import DashBoard from './components/Admin/DashBoard/DashBoard.jsx';
 import AdminCourses from './components/Admin/AdminCourses/AdminCourses.jsx';
 import CreateCourse from './components/Admin/CreateCourse/CreateCourse.jsx';
 import Users from './components/Admin/Users/Users.jsx';
+import { useDispatch, useSelector } from 'react-redux';
+import toast, { Toaster } from 'react-hot-toast';
+import { loadUser } from './redux/Actions/userAction.js';
 
 function App() {
   // window.addEventListener('contextmenu', (e) => {
   //   e.preventDefault();
   // });//disables right click
 
+  const { isAuthenticated, user, message, error } = useSelector(state => state.user);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (message) {
+      toast.success(message);
+      dispatch({ type: 'clearMessage' });
+    }
+    if (error) {
+      toast.error(error);
+      dispatch({ type: 'clearError' });
+    }
+  }
+    , [dispatch, message, error]);
+
+
+  useEffect(() => {
+    dispatch(loadUser());//dispatching loadUser action, which will check if user is logged in or not when we refresh the page
+  }, [dispatch]);//we are passing dispatch as dependency because we are using it inside useEffect
+
+  
   return (
     <Router>
-      <Header />
+      <Header isAuthenticated={isAuthenticated} user={user} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/courses" element={<Courses />} />
@@ -57,6 +81,7 @@ function App() {
         <Route path='/admin/users' element={<Users />} />
       </Routes>
       <Footer />
+      <Toaster />
     </Router>
   );
 }

@@ -24,11 +24,14 @@ const LinkButton = ({ url = '/', title = 'Home', onClose }) => (
 
 
 
-const Header = ({ isAuthenticated = false, user }) => {
+const Header = ({ isAuthenticated=false, user }) => {
+  //we will be passing above 2 paracmeters by accessing redux store in app.js and send them as parameters to header
+
+  
   //testing isAuthenticated
-  isAuthenticated=true;
+  // isAuthenticated=false;
   //testing user
-  user={role:'admin'};
+  // user={role:'admin'};
 
 
   const { isOpen, onOpen, onClose } = useDisclosure();
