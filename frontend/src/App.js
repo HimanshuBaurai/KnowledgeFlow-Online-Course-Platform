@@ -26,6 +26,7 @@ import Users from './components/Admin/Users/Users.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import toast, { Toaster } from 'react-hot-toast';
 import { loadUser } from './redux/Actions/userAction.js';
+import { ProtectedRoute } from 'protected-route-react'
 
 function App() {
   // window.addEventListener('contextmenu', (e) => {
@@ -52,7 +53,7 @@ function App() {
     dispatch(loadUser());//dispatching loadUser action, which will check if user is logged in or not when we refresh the page
   }, [dispatch]);//we are passing dispatch as dependency because we are using it inside useEffect
 
-  
+
   return (
     <Router>
       <Header isAuthenticated={isAuthenticated} user={user} />
@@ -60,8 +61,22 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/courses" element={<Courses />} />
         <Route path="/course/:id" element={<CoursePage />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} />
+        <Route path='/login' element={
+          <ProtectedRoute
+            isAuthenticated={!isAuthenticated} //not authenticated, then only login route is available
+            redirect='/profile'//if authenticated, then redirect to profile page
+          >
+            <Login />
+          </ProtectedRoute>
+        } />
+        <Route path='/register' element={
+          <ProtectedRoute
+            isAuthenticated={!isAuthenticated}
+            redirect='/profile'
+          >
+            <Register />
+          </ProtectedRoute>
+        } />
         <Route path='/forgetpassword' element={<ForgetPassword />} />
         <Route path='/resetpassword/:token' element={<ResetPassword />} />
         <Route path='/contact' element={<Contact />} />
@@ -71,7 +86,14 @@ function App() {
         <Route path='*' element={<NotFound />} />
         <Route path='/paymentsuccess' element={<PaymentSuccess />} />
         <Route path='/paymentfail' element={<PaymentFail />} />
-        <Route path='/profile' element={<Profile />} />
+        <Route path='/profile' element={
+          <ProtectedRoute
+            isAuthenticated={isAuthenticated}
+          //by default isAuthenticated is false, therefore if it is false it redirects to login page(by default "/login" route, check its documentation)
+          >
+            <Profile />
+          </ProtectedRoute>//this is a protected route, which means that only logged in users can access this route
+        } />
         <Route path='/changepassword' element={<ChangePassword />} />
         <Route path='/updateprofile' element={<UpdateProfile />} />
         {/* admin routes  */}
