@@ -67,22 +67,23 @@ const ChangePhotoBox = ({ isOpen, onClose, changeImageSubmitHandler }) => {
 
 
 
-const Profile = () => {
-    const user = {
-        name: 'sample',
-        email: 'abc@gmail.com',
-        createdAt: String(new Date().toISOString()),
-        role: 'user',
-        subscription: {
-            status: 'inactive',
-        },
-        playlist: [
-            {
-                course: 'vgvbvb',//denotes course id
-                poster: 'https://th.bing.com/th/id/OIP.l8kGzfQsw5dPihvVhPO-5wHaHa?w=680&h=680&rs=1&pid=ImgDetMain',
-            }
-        ]
-    }
+const Profile = ({user}) => {
+    //temp data
+    // const user = {
+    //     name: 'sample',
+    //     email: 'abc@gmail.com',
+    //     createdAt: String(new Date().toISOString()),
+    //     role: 'user',
+    //     subscription: {
+    //         status: 'inactive',
+    //     },
+    //     playlist: [
+    //         {
+    //             course: 'vgvbvb',//denotes course id
+    //             poster: 'https://th.bing.com/th/id/OIP.l8kGzfQsw5dPihvVhPO-5wHaHa?w=680&h=680&rs=1&pid=ImgDetMain',
+    //         }
+    //     ]
+    // }
 
     const removeFromPlaylistHandler = (courseId) => {
         console.log(courseId);
@@ -106,7 +107,7 @@ const Profile = () => {
                 padding={'8'}
             >
                 <VStack>
-                    <Avatar boxSize={'48'} />
+                    <Avatar boxSize={'48'} src={user.avatar.url}/>
                     <Button onClick={onOpen} colorScheme='yellow' variant={'ghost'} children='Change Profile Picture' />
                 </VStack>
 
@@ -128,7 +129,7 @@ const Profile = () => {
                             <HStack>
                                 <Text children='Subscription:' fontWeight={'bold'} />
                                 {
-                                    user.subscription.status === 'active' ? (
+                                    user.subscription && user.subscription.status === 'active' ? (
                                         <Button colorScheme='red' children='Cancel Subscription' />
                                     ) : (
                                         <Link to='/subscribe'>
