@@ -4,7 +4,7 @@ import React from 'react'
 const Loader = ({ color = 'yellow.500' }) => {
     return (
         <VStack h={'100vh'} justifyContent={'center'}>
-            <div style={{ transform: 'scale(4)' }}>
+            <div style={{ transform: 'scale(3)' }}>
                 <Spinner
                     thickness='3px'
                     speed='0.65s'
