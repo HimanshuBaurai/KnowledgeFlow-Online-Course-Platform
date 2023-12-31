@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { RiDeleteBin7Fill } from 'react-icons/ri'
 import { Link } from 'react-router-dom'
 import { fileUploadCss } from '../Auth/Register'
-import { updateProfilePicture } from '../../redux/Actions/profileAction'
+import { removeFromPlaylist, updateProfilePicture } from '../../redux/Actions/profileAction'
 import { useDispatch, useSelector } from 'react-redux'
 import { loadUser } from '../../redux/Actions/userAction'
 import toast from 'react-hot-toast'
@@ -89,14 +89,19 @@ const Profile = ({ user }) => {
     //     ]
     // }
 
-    const removeFromPlaylistHandler = (courseId) => {
-        console.log(courseId);
-    }
 
     const { isOpen, onOpen, onClose } = useDisclosure();//to keep a track of whether the modal is open or not
 
     const dispatch = useDispatch();
     const { loading, message, error } = useSelector(state => state.profile);
+
+
+    const removeFromPlaylistHandler = async (courseId) => {
+        await dispatch(removeFromPlaylist(courseId));
+        dispatch(loadUser());
+    }
+
+
     const changeImageSubmitHandler = async (e, image) => {
         e.preventDefault();
 
@@ -197,7 +202,7 @@ const Profile = ({ user }) => {
                                         <Link to={`/course/${item.course}`}>
                                             <Button variant={'ghost'} colorScheme={'yellow'} children='Watch Now' />
                                         </Link>
-                                        <Button variant={'ghost'} colorScheme={'red'} onClick={() => removeFromPlaylistHandler(item.course)}>
+                                        <Button isLoading={loading} variant={'ghost'} colorScheme={'red'} onClick={() => removeFromPlaylistHandler(item.course)}>
                                             <RiDeleteBin7Fill />
                                             <Text children='Remove from Playlist' />
                                         </Button>
@@ -211,7 +216,7 @@ const Profile = ({ user }) => {
                     )
             }
 
-            <ChangePhotoBox isOpen={isOpen} onClose={onClose} changeImageSubmitHandler={changeImageSubmitHandler} loading={loading}/>
+            <ChangePhotoBox isOpen={isOpen} onClose={onClose} changeImageSubmitHandler={changeImageSubmitHandler} loading={loading} />
         </Container>
     )
 }

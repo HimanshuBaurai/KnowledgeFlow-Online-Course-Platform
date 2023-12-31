@@ -26,7 +26,7 @@ router.route('/forgetpassword').post(forgetPassword);
 //reset password
 router.route('/resetpassword/:token').put(resetPassword);
 //add to playlist
-router.route('/addtoplaylist/').post(isAuthenticated, addToPlaylist);//isAuthenticated ensures that the user is logged in
+router.route('/addtoplaylist').post(isAuthenticated, addToPlaylist);//isAuthenticated ensures that the user is logged in
 //remove from playlist
 router.route('/removefromplaylist').delete(isAuthenticated, removeFromPlaylist);//isAuthenticated ensures that the user is logged in
 

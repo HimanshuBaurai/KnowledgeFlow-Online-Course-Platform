@@ -5,9 +5,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getAllCourses } from '../../redux/Actions/courseAction.js'
 import toast from 'react-hot-toast'
 import Loader from '../Layout/Loader/Loader.jsx'
+import { addToPlaylist } from '../../redux/Actions/profileAction.js'
+import { loadUser } from '../../redux/Actions/userAction.js'
 
-
-const Course = ({ views, title, imageSrc, id, addToPlaylistHandler, creator, description, lectureCount }) => {
+const Course = ({ views, title, imageSrc, id, addToPlaylistHandler, creator, description, lectureCount, loading }) => {
     return (
         <VStack className='course' alignItems={['center', 'flex-start']}>
 
@@ -20,33 +21,48 @@ const Course = ({ views, title, imageSrc, id, addToPlaylistHandler, creator, des
                 size={'sm'}
                 fontFamily={'sans-serif'}
                 noOfLines={3}
+                textTransform={'uppercase'} 
             />
 
             <Text noOfLines={2} children={description} />
 
             <HStack>
-                <Text
+                <Heading
+                    fontWeight={'bold'}
+                    textTransform={'uppercase'}
+                    children={'Creator: '}
+                    size={'xs'}
+                />
+                <Heading
+                    fontFamily={'body'}
+                    // textTransform={'uppercase'}
+                    children={creator}
+                    size={'xs'}
+                    textDecoration={'underline'}
+                />
+                {/* <Text
                     fontWeight={'bold'}
                     textTransform={'uppercase'}
                     children={'Creator'}
+                    fontSize={'xs'}
                 />
                 <Text
                     fontFamily={'body'}
                     textTransform={'uppercase'}
                     children={creator}
-                />
+                /> */}
             </HStack>
 
             <Heading
                 textAlign={'center'}
                 size={'xs'}
-                children={`${lectureCount} Lectures`}
+                children={`Lectures: ${lectureCount}`}
                 textTransform={'uppercase'}
             />
             <Heading
                 textAlign={'center'}
                 size={'xs'}
-                children={`${views} views`}
+                children={`Views: ${views}`}
                 textTransform={'uppercase'}
             />
 
@@ -57,7 +73,7 @@ const Course = ({ views, title, imageSrc, id, addToPlaylistHandler, creator, des
                 <Link to={`/course/${id}`} >
                     <Button colorScheme='yellow'>Watch Now</Button>
                 </Link>
-                <Button colorScheme='purple' variant='ghost' onClick={() => addToPlaylistHandler(id)} >Add to Playlist</Button>
+                <Button isLoading={loading} colorScheme='purple' variant='ghost' onClick={() => addToPlaylistHandler(id)} >Add to Playlist</Button>
             </Stack>
         </VStack>
     )
@@ -65,10 +81,10 @@ const Course = ({ views, title, imageSrc, id, addToPlaylistHandler, creator, des
 
 const Courses = () => {
     const [keyword, setKeyword] = useState('');
-    const [category, setCategory] = useState('All');
+    const [category, setCategory] = useState('');
     const categories = ['Web Development', 'AI', 'App Development', 'Data Science', 'Machine Learning', 'Blockchain', 'Cyber Security', 'Cloud Computing', 'DevOps', 'Digital Marketing', 'Graphic Design', 'Mobile Development', 'Network & Security', 'Operating System', 'Programming', 'Software Testing', 'UI/UX Design', 'Video Editing', 'Web Design', 'Other'];
 
-    const { loading, error, courses } = useSelector(state => state.course);
+    const { loading, error, courses, message } = useSelector(state => state.course);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -78,9 +94,17 @@ const Courses = () => {
             toast.error(error);
             dispatch({ type: 'clearError' });
         }
-    }, [dispatch, category, keyword, error]);
+        if (message) {
+            toast.success(message);
+            dispatch({ type: 'clearMessage' });
+        }
+    }, [dispatch, category, keyword, error, message]);
 
-    const addToPlaylistHandler = (id) => { console.log(id) }
+
+    const addToPlaylistHandler = async(id) => {
+        await dispatch(addToPlaylist(id));
+        dispatch(loadUser());
+    }
 
 
     return (
@@ -126,6 +150,7 @@ const Courses = () => {
                                 creator={item.createdBy}
                                 lectureCount={item.numOfVideos}
                                 addToPlaylistHandler={addToPlaylistHandler}
+                                loading={loading}
                             />
                         ))
                         ) : (
