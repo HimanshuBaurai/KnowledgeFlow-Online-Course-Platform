@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { fileUploadCss } from '../Auth/Register'
 import { removeFromPlaylist, updateProfilePicture } from '../../redux/Actions/profileAction'
 import { useDispatch, useSelector } from 'react-redux'
-import { loadUser } from '../../redux/Actions/userAction'
+import { cancelSubscription, loadUser } from '../../redux/Actions/userAction'
 import toast from 'react-hot-toast'
 
 
@@ -94,6 +94,7 @@ const Profile = ({ user }) => {
 
     const dispatch = useDispatch();
     const { loading, message, error } = useSelector(state => state.profile);
+    const { loading: subscriptionLoading, error: subscriptionError, message: subscriptionMessage } = useSelector(state => state.subscription);
 
 
     const removeFromPlaylistHandler = async (courseId) => {
@@ -120,7 +121,21 @@ const Profile = ({ user }) => {
             toast.success(message);
             dispatch({ type: 'clearMessage' });
         }
-    }, [dispatch, message, error]);
+
+        if (subscriptionError) {
+            toast.error(subscriptionError);
+            dispatch({ type: 'clearError' });
+        }
+        if (subscriptionMessage) {
+            toast.success(subscriptionMessage);
+            dispatch({ type: 'clearMessage' });
+            dispatch(loadUser());
+        }
+    }, [dispatch, message, error, subscriptionMessage, subscriptionError]);
+
+    const cancelSubscriptionHandler = async () => {
+        await dispatch(cancelSubscription());
+    }
 
     return (
         <Container minH={'95vh'} maxW={'container.lg'} py={'8'} >
@@ -156,7 +171,7 @@ const Profile = ({ user }) => {
                                 <Text children='Subscription:' fontWeight={'bold'} />
                                 {
                                     user.subscription && user.subscription.status === 'active' ? (
-                                        <Button colorScheme='red' children='Cancel Subscription' />
+                                        <Button isLoading={subscriptionLoading} onClick={cancelSubscriptionHandler} colorScheme='red' children='Cancel Subscription' />
                                     ) : (
                                         <Link to='/subscribe'>
                                             <Button colorScheme='green' variant={'ghost'} children='Subscribe' />
