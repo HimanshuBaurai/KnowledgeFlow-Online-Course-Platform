@@ -7,11 +7,12 @@ import { ServerURL } from '../../redux/Store.js';
 import toast from 'react-hot-toast';
 import vg from '../../assets/images/vg.jpeg';
 
-const Subscribe = ({user}) => {
+const Subscribe = ({ user }) => {
   const dispatch = useDispatch();
   const [key, setKey] = useState('');
 
   const { loading, error, subscriptionId } = useSelector(state => state.subscription);
+  const { error: courseError } = useSelector(state => state.course);
 
   const subscribeHandler = async () => {
     const { data } = await axios.get(`${ServerURL}/razorpaykey`);
@@ -23,6 +24,10 @@ const Subscribe = ({user}) => {
   useEffect(() => {
     if (error) {
       toast.error(error);
+      dispatch({ type: 'clearError' });
+    }
+    if (courseError) {
+      toast.error(courseError);
       dispatch({ type: 'clearError' });
     }
     if (subscriptionId) {
@@ -56,7 +61,7 @@ const Subscribe = ({user}) => {
       openPopUp();
 
     }
-  }, [dispatch, error, subscriptionId, key, user]);
+  }, [dispatch, error, subscriptionId, key, user, courseError]);
 
 
   return (
