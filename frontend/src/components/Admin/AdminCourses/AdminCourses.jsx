@@ -1,9 +1,11 @@
 import { Box, Button, Grid, HStack, Heading, Image, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr, useDisclosure } from '@chakra-ui/react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import cursor from '../../../assets/images/cursor.png'
 import SideBar from '../SideBar'
 import { RiDeleteBin7Fill } from 'react-icons/ri'
 import CourseModal from './CourseModal'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllCourses } from '../../../redux/Actions/courseAction'
 
 
 
@@ -37,18 +39,8 @@ const Row = ({ item, courseDetailsHandler, deleteButtonHandler }) => {
 const AdminCourses = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();//to keep a track of whether the modal is open or not
 
-    const courses = [{
-        _id: 1,
-        title: 'React Course',
-        category: 'web development',
-        poster: {
-            url: 'https://th.bing.com/th/id/OIP.l8kGzfQsw5dPihvVhPO-5wHaHa?w=680&h=680&rs=1&pid=ImgDetMain'
-        },
-        createdBy: 'John Doe',
-        views: 100,
-        numOfVideos: 10
-
-    }]//temp data
+    const { courses } = useSelector(state => state.course);
+    const dispatch = useDispatch();
 
     const courseDetailsHandler = (id) => {
         onOpen();//for opening up course pop-up modal
@@ -60,9 +52,14 @@ const AdminCourses = () => {
     const deleteLectureButtonHandler = (lectureId, courseId) => {
         console.log(lectureId, courseId)
     }
-    const addLectureHandler = (e,courseId,title,description,video) => {
-        e.preventDefault(); 
+    const addLectureHandler = (e, courseId, title, description, video) => {
+        e.preventDefault();
     }
+
+
+    useEffect(() => {
+        dispatch(getAllCourses());
+    }, [dispatch])
 
 
     return (
