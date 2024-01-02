@@ -1,24 +1,27 @@
 import { Box, Button, Grid, HStack, Heading, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import cursor from '../../../assets/images/cursor.png'
 import SideBar from '../SideBar'
 import { RiDeleteBin7Fill } from 'react-icons/ri'
+import { useDispatch, useSelector } from 'react-redux'
+import { deleteUser, getAllUsers, updateUserRole } from '../../../redux/Actions/adminAction'
+import toast from 'react-hot-toast'
 
 
 
 
-const Row = ({ item, updateHandler,deleteButtonHandler }) => {
+const Row = ({ item, updateHandler, deleteButtonHandler, loading }) => {
     return (
         <Tr>
             <Td>#{item._id}</Td>
             <Td>{item.name}</Td>
             <Td>{item.email}</Td>
             <Td>{item.role}</Td>
-            <Td>{item.subscription.status === 'active' ? 'Active' : 'Not Active'}</Td>
+            <Td>{item.subscription && item.subscription.status === 'active' ? 'Active' : 'Not Active'}</Td>
             <Td isNumeric>
                 <HStack justifyContent={'flex-end'}>
-                    <Button variant={'outline'} colorScheme={'purple'} onClick={()=>updateHandler(item._id)}>Change Role</Button>
-                    <Button color={'purple.600'} onClick={()=>deleteButtonHandler(item._id)}>
+                    <Button isLoading={loading} variant={'outline'} colorScheme={'purple'} onClick={() => updateHandler(item._id)}>Change Role</Button>
+                    <Button isLoading={loading} color={'purple.600'} onClick={() => deleteButtonHandler(item._id)}>
                         <RiDeleteBin7Fill />
                     </Button>
 
@@ -30,23 +33,31 @@ const Row = ({ item, updateHandler,deleteButtonHandler }) => {
 }
 
 const Users = () => {
-    const users = [{
-        _id: 1,
-        name: 'John Doe',
-        email: 'absc@gmail.com',
-        role: 'admin',
-        subscription: {
-            status: 'active'
-        },
-        action: 1
-    }]//temp data
 
     const updateHandler = (id) => {
-        console.log(id)
+        dispatch(updateUserRole(id));
     }
     const deleteButtonHandler = (id) => {
-        console.log(id)
+        dispatch(deleteUser(id));
     }
+
+    //no need of  temp data now, we will fetch dynamic data  from store
+    const dispatch = useDispatch();
+    const { users, loading, error, message } = useSelector(state => state.admin);
+
+    useEffect(() => {
+        if (error) {
+            toast.error(error);
+            dispatch({ type: 'clearError' });
+        }
+        if (message) {
+            toast.success(message);
+            dispatch({ type: 'clearMessage' });
+        }
+
+        dispatch(getAllUsers());
+    }, [dispatch, error, message]);
+
 
     return (
         <Grid
@@ -76,8 +87,8 @@ const Users = () => {
                         </Thead>
                         <Tbody>
                             {
-                                users.map((item) => (
-                                    <Row key={item._id} item={item} updateHandler={updateHandler} deleteButtonHandler={deleteButtonHandler}/>
+                                users && users.map((item) => (
+                                    <Row key={item._id} item={item} updateHandler={updateHandler} deleteButtonHandler={deleteButtonHandler} loading={loading} />
                                 ))
                             }
                         </Tbody>
