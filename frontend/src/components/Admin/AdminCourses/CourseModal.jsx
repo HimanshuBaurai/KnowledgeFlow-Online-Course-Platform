@@ -29,6 +29,7 @@ const CourseModal = ({ isOpen, onClose, courseTitle, id, loading, deleteButtonHa
         const file = e.target.files[0];
         const reader = new FileReader();
         reader.readAsDataURL(file);
+        
         reader.onload = () => {
             if (reader.readyState === 2) {
                 setVideoPreview(reader.result);
@@ -95,7 +96,7 @@ const CourseModal = ({ isOpen, onClose, courseTitle, id, loading, deleteButtonHa
                                     <Input
                                         accept='video/mp4'
                                         required
-                                        type='file'
+                                        type={'file'}
                                         focusBorderColor='purple.400'
                                         css={{
                                             '&::-webkit-file-upload-button': {

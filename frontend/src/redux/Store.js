@@ -14,5 +14,5 @@ const store = configureStore({
 })
 
 export default store;
-export const ServerURL = "https://knowledge-flow-online-course-platform.vercel.app/api/v1";
-// export const ServerURL = "https://knowledgeflow-server.onrender.com/api/v1";
+// export const ServerURL = "https://knowledge-flow-online-course-platform.vercel.app/api/v1";
+export const ServerURL = "https://knowledgeflow-server.onrender.com/api/v1";
