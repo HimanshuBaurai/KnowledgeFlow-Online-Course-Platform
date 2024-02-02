@@ -44,7 +44,7 @@ const Request = () => {
                             onChange={(e) => setName(e.target.value)}
                             placeholder='abc'
                             type='text'
-                            focusBorderColor='yellow.400'
+                            focusBorderColor='pink.400'
                         />
                     </Box>
                     <Box my={'4'}>
@@ -56,7 +56,7 @@ const Request = () => {
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder='abc@gmail.com'
                             type='email'
-                            focusBorderColor='yellow.400'
+                            focusBorderColor='pink.400'
                         />
                     </Box>
                     <Box my={'4'}>
@@ -67,17 +67,17 @@ const Request = () => {
                             value={course}
                             onChange={(e) => setCourse(e.target.value)}
                             placeholder='Your Requested Course and Description(optional)'
-                            focusBorderColor='yellow.400'
+                            focusBorderColor='pink.400'
                         />
                     </Box>
 
 
-                    <Button isLoading={loading} my={'4'} type='submit' colorScheme={'yellow'} children={'Send Message'} />
+                    <Button isLoading={loading} my={'4'} type='submit' colorScheme={'pink'} children={'Send Message'} />
 
                     <Box my={'4'}>
                         Explore the existing courses{' '}
                         <Link to='/courses'>
-                            <Button variant={'link'} children={'Click'} colorScheme='purple' />
+                            <Button variant={'link'} children={'Click'} colorScheme='green' />
                         </Link>
                         {' '} here
                     </Box>

@@ -37,7 +37,7 @@ const ChangePassword = () => {
                         onChange={(e) => setOldPassword(e.target.value)}
                         placeholder='Old Password'
                         type='password'
-                        focusBorderColor='yellow.400'
+                        focusBorderColor='pink.400'
                     />
                     <Input
                         required
@@ -45,9 +45,9 @@ const ChangePassword = () => {
                         onChange={(e) => setNewPassword(e.target.value)}
                         placeholder='New Password'
                         type='password'
-                        focusBorderColor='yellow.400'
+                        focusBorderColor='pink.400'
                     />
-                    <Button isLoading={loading} width={'full'} my={'4'} type='submit' colorScheme={'yellow'} children={'Change Password'} />
+                    <Button isLoading={loading} width={'full'} my={'4'} type='submit' colorScheme={'pink'} children={'Change Password'} />
                 </VStack>
             </form>
         </Container>

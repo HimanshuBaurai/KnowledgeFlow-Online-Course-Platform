@@ -44,9 +44,9 @@ const ResetPassword = () => {
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder='New Password'
                         type='password'
-                        focusBorderColor='yellow.400'
+                        focusBorderColor='pink.400'
                     />
-                    <Button isLoading={loading} my={'4'} type='submit' colorScheme={'yellow'} children={'Reset Password'} />
+                    <Button isLoading={loading} my={'4'} type='submit' colorScheme={'pink'} children={'Reset Password'} />
                 </VStack>
             </form>
         </Container>

@@ -39,9 +39,9 @@ const ForgetPassword = () => {
             onChange={(e) => setEmail(e.target.value)}
             placeholder='abc@gmail.com'
             type='email'
-            focusBorderColor='yellow.400'
+            focusBorderColor='pink.400'
           />
-          <Button isLoading={loading} my={'4'} type='submit' colorScheme={'yellow'} children={'Send Reset Link'} />
+          <Button isLoading={loading} my={'4'} type='submit' colorScheme={'pink'} children={'Send Reset Link'} />
         </VStack>
       </form>
     </Container>

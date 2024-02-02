@@ -11,7 +11,7 @@ const PaymentSuccess = () => {
             <Heading children='You have a Pro Plan' my={'8'} textAlign={'center'} />
 
             <VStack boxShadow={'lg'} pb={'10'} alignItems={'center'} borderRadius={'lg'} spacing={'0'}>
-                <Box w={'full'} bg={'yellow.400'} p={'4'} css={{ borderRadius: '8px 8px 0 0' }}>
+                <Box w={'full'} bg={'pink.400'} p={'4'} css={{ borderRadius: '8px 8px 0 0' }}>
                     <Text color={'black'} children={'Payment Success'} />
                 </Box>
 
@@ -25,7 +25,7 @@ const PaymentSuccess = () => {
                 </Box>
 
                 <Link to={'/profile'}>
-                    <Button my={'8'} width={'full'} colorScheme={'purple'} variant={'ghost'} children={'Go to Profile'} />
+                    <Button my={'8'} width={'full'} colorScheme={'green'} variant={'ghost'} children={'Go to Profile'} />
                 </Link>
 
                 <Heading size={'xs'} children={`Reference: ${reference}`} />

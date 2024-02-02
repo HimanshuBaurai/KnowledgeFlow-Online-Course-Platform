@@ -29,12 +29,12 @@ const Row = ({ item, courseDetailsHandler, deleteButtonHandler, loading }) => {
                     <Button
                         isLoading={loading}
                         variant={'outline'}
-                        colorScheme={'purple'}
+                        colorScheme={'green'}
                         onClick={() => courseDetailsHandler(item._id, item.title)}
                     >View Lectures</Button>
                     <Button
                         isLoading={loading}
-                        color={'purple.600'}
+                        color={'green.600'}
                         onClick={() => deleteButtonHandler(item._id)}>
                         <RiDeleteBin7Fill />
                     </Button>

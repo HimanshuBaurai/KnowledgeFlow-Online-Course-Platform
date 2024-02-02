@@ -50,7 +50,7 @@ const Header = ({ isAuthenticated=false, user }) => {
 
       <Button
         onClick={onOpen}
-        colorScheme={'yellow'}
+        colorScheme={'pink'}
         width="12"
         height={'12'}
         rounded="full"
@@ -94,7 +94,7 @@ const Header = ({ isAuthenticated=false, user }) => {
                     <VStack>
                       <HStack>
                         <Link onClick={onClose} to="/profile">
-                          <Button variant={'ghost'} colorScheme={'yellow'}>
+                          <Button variant={'ghost'} colorScheme={'pink'}>
                             Profile
                           </Button>
                         </Link>
@@ -107,7 +107,7 @@ const Header = ({ isAuthenticated=false, user }) => {
 
                       {user && user.role === 'admin' && (
                         <Link onClick={onClose} to="/admin/dashboard">
-                          <Button colorScheme={'purple'} variant="ghost">
+                          <Button colorScheme={'green'} variant="ghost">
                             <RiDashboardFill style={{ margin: '4px' }} />
                             Dashboard
                           </Button>
@@ -118,13 +118,13 @@ const Header = ({ isAuthenticated=false, user }) => {
                 ) : (
                   <>
                     <Link onClick={onClose} to="/login">
-                      <Button colorScheme={'yellow'}>Login</Button>
+                      <Button colorScheme={'pink'}>Login</Button>
                     </Link>
 
                     <p>OR</p>
 
                     <Link onClick={onClose} to="/register">
-                      <Button colorScheme={'yellow'}>Sign Up</Button>
+                      <Button colorScheme={'pink'}>Sign Up</Button>
                     </Link>
                   </>
                 )}

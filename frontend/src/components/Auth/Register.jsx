@@ -69,7 +69,7 @@ const Register = () => {
                             onChange={(e) => setName(e.target.value)}
                             placeholder='John Doe'
                             type='text'
-                            focusBorderColor='yellow.400'
+                            focusBorderColor='pink.400'
                         />
                     </Box>
                     <Box my={'4'}>
@@ -81,7 +81,7 @@ const Register = () => {
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder='abc@gmail.com'
                             type='email'
-                            focusBorderColor='yellow.400'
+                            focusBorderColor='pink.400'
                         />
                     </Box>
                     <Box my={'4'}>
@@ -93,7 +93,7 @@ const Register = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder='********'
                             type='password'
-                            focusBorderColor='yellow.400'
+                            focusBorderColor='pink.400'
                         />
                     </Box>
                     <Box my={'4'}>
@@ -103,18 +103,18 @@ const Register = () => {
                             required
                             id='chooseAvatar'
                             type='file'
-                            focusBorderColor='yellow.400'
+                            focusBorderColor='pink.400'
                             css={fileUploadStyle}
                             onChange={changeImageHandler}
                         />
                     </Box>
 
-                    <Button my={'4'} type='submit' colorScheme={'yellow'} children={'Sign Up'} />
+                    <Button my={'4'} type='submit' colorScheme={'pink'} children={'Sign Up'} />
 
                     <Box my={'4'}>
                         Registered User?{' '}
                         <Link to='/login'>
-                            <Button fontSize={'sm'} variant={'link'} children={'Login'} colorScheme='purple' />
+                            <Button fontSize={'sm'} variant={'link'} children={'Login'} colorScheme='green' />
                         </Link>
                         {' '} here
                     </Box>

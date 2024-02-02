@@ -71,9 +71,9 @@ const Course = ({ views, title, imageSrc, id, addToPlaylistHandler, creator, des
                 alignItems={['center', 'flex-start']}
             >
                 <Link to={`/course/${id}`} >
-                    <Button colorScheme='yellow'>Watch Now</Button>
+                    <Button colorScheme='pink'>Watch Now</Button>
                 </Link>
-                <Button isLoading={loading} colorScheme='purple' variant='ghost' onClick={() => addToPlaylistHandler(id)} >Add to Playlist</Button>
+                <Button isLoading={loading} colorScheme='green' variant='ghost' onClick={() => addToPlaylistHandler(id)} >Add to Playlist</Button>
             </Stack>
         </VStack>
     )
@@ -119,7 +119,7 @@ const Courses = () => {
                     m={'8'}
                     onChange={(e) => setKeyword(e.target.value)}
                     type='text'
-                    focusBorderColor='yellow.400'
+                    focusBorderColor='pink.400'
                 />
 
                 <HStack overflowX={'auto'} paddingY={'8'} css={{ "&::-webkit-scrollbar": { display: 'none' } }}>

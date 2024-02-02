@@ -11,7 +11,7 @@ const VideoCard = ({ title, description, num, lectureId, courseId, loading, dele
                 <Heading size={'sm'} children={`#${num} ${title}`} />
                 <Text children={description} />
             </Box>
-            <Button isLoading={loading} color={'purple.600'} onClick={() => deleteButtonHandler(lectureId, courseId)}>
+            <Button isLoading={loading} color={'green.600'} onClick={() => deleteButtonHandler(lectureId, courseId)}>
                 <RiDeleteBin7Fill />
             </Button>
         </Stack>
@@ -82,13 +82,13 @@ const CourseModal = ({ isOpen, onClose, courseTitle, id, loading, deleteButtonHa
                                 <VStack spacing={'4'}>
                                     <Heading children={'Add Lecture'} size={'md'} textTransform={'uppercase'} />
                                     <Input
-                                        focusBorderColor='purple.400'
+                                        focusBorderColor='green.400'
                                         placeholder='Title'
                                         value={title}
                                         onChange={(e) => setTitle(e.target.value)}
                                     />
                                     <Input
-                                        focusBorderColor='purple.400'
+                                        focusBorderColor='green.400'
                                         placeholder='Description'
                                         value={description}
                                         onChange={(e) => setDescription(e.target.value)}
@@ -97,11 +97,11 @@ const CourseModal = ({ isOpen, onClose, courseTitle, id, loading, deleteButtonHa
                                         accept='video/mp4'
                                         required
                                         type={'file'}
-                                        focusBorderColor='purple.400'
+                                        focusBorderColor='green.400'
                                         css={{
                                             '&::-webkit-file-upload-button': {
                                                 ...fileUploadCss,
-                                                color: 'purple',
+                                                color: 'green',
                                             }
                                         }}
                                         onChange={changeVideoHandler}
@@ -109,7 +109,7 @@ const CourseModal = ({ isOpen, onClose, courseTitle, id, loading, deleteButtonHa
                                     {
                                         videoPreview && <video controlsList='noDownload' src={videoPreview} controls width={'full'} />
                                     }
-                                    <Button isLoading={loading} w={'full'} type='submit' colorScheme='purple' children={'Upload'} />
+                                    <Button isLoading={loading} w={'full'} type='submit' colorScheme='green' children={'Upload'} />
                                 </VStack>
                             </form>
                         </Box>

@@ -14,7 +14,8 @@ const DataBox = ({ title, qty, qtyPercentage, profit }) => {
     return (
         <Box
             w={['full', '20%']}
-            boxShadow={'-2px 0 10px rgba(107,70,193,0.5)'}
+            // boxShadow={'-2px 0 10px rgba(107,70,193,0.5)'}
+            boxShadow={'-2px 0 10px rgba(70, 193, 107, 0.5)'}
             p={'8'}
             borderRadius={'lg'}
         >
@@ -39,7 +40,7 @@ const Bar = ({ title, value, profit }) => {
             <Heading size={'sm'} children={title} mb={'2'} />
             <HStack w={'full'} alignItems={'center'}>
                 <Text children={profit ? '0%' : `${-value}%`} />
-                <Progress w={'full'} colorScheme='purple' value={profit ? value : 0} />
+                <Progress w={'full'} colorScheme='green' value={profit ? value : 0} />
                 <Text children={`${value > 100 ? value : 100}`} />
             </HStack>
         </Box>
@@ -81,7 +82,7 @@ const DashBoard = () => {
             css={{ cursor: `url(${cursor}), default` }}
         >
             {
-                loading || !stats ? (<Loader color='purple.400' />) : (
+                loading || !stats ? (<Loader color='green.400' />) : (
                     <Box boxSizing='border-box' py={'16'} px={['4', '0']}>
                         <Text
                             textAlign='center'
@@ -112,7 +113,8 @@ const DashBoard = () => {
                             borderRadius={'lg'}
                             p={['0', '16']}
                             mt={['4', '16']}
-                            boxShadow={'-2px 0 10px rgba(107,70,193,0.5)'}
+                            // boxShadow={'-2px 0 10px rgba(107,70,193,0.5)'}
+                            boxShadow={'-2px 0 10px rgba(70, 193, 107, 0.5)'}
                         >
                             <Heading
                                 textAlign={['center', 'left']}

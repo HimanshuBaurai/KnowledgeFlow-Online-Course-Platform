@@ -51,7 +51,7 @@ const ChangePhotoBox = ({ isOpen, onClose, changeImageSubmitHandler, loading }) 
                                     css={{ '&::file-selector-button': fileUploadCss }}
                                     onChange={changeImageHandler}
                                 />
-                                <Button isLoading={loading} w={'full'} type='submit' colorScheme='yellow' children='Change' />
+                                <Button isLoading={loading} w={'full'} type='submit' colorScheme='pink' children='Change' />
                             </VStack>
                         </form>
                     </Container>
@@ -149,7 +149,7 @@ const Profile = ({ user }) => {
             >
                 <VStack>
                     <Avatar boxSize={'48'} src={user.avatar.url} />
-                    <Button onClick={onOpen} colorScheme='yellow' variant={'ghost'} children='Change Profile Picture' />
+                    <Button onClick={onOpen} colorScheme='pink' variant={'ghost'} children='Change Profile Picture' />
                 </VStack>
 
                 <VStack spacing={'4'} alignItems={['center', 'flex-start']}>
@@ -188,10 +188,10 @@ const Profile = ({ user }) => {
                         direction={['column', 'row']}
                     >
                         <Link to='/updateprofile'>
-                            <Button colorScheme='yellow' children='Update Profile' />
+                            <Button colorScheme='pink' children='Update Profile' />
                         </Link>
                         <Link to='/changepassword'>
-                            <Button colorScheme='yellow' children='Change Password' />
+                            <Button colorScheme='pink' children='Change Password' />
                         </Link>
                     </Stack>
                 </VStack>
@@ -215,7 +215,7 @@ const Profile = ({ user }) => {
                                     />
                                     <HStack>
                                         <Link to={`/course/${item.course}`}>
-                                            <Button variant={'ghost'} colorScheme={'yellow'} children='Watch Now' />
+                                            <Button variant={'ghost'} colorScheme={'pink'} children='Watch Now' />
                                         </Link>
                                         <Button isLoading={loading} variant={'ghost'} colorScheme={'red'} onClick={() => removeFromPlaylistHandler(item.course)}>
                                             <RiDeleteBin7Fill />

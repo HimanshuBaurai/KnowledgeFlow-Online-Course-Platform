@@ -29,16 +29,16 @@ const UpdateProfile = ({ user }) => {
             onChange={(e) => setName(e.target.value)}
             placeholder='Enter Name'
             type='text'
-            focusBorderColor='yellow.400'
+            focusBorderColor='pink.400'
           />
           <Input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder='Enter Email'
             type='email'
-            focusBorderColor='yellow.400'
+            focusBorderColor='pink.400'
           />
-          <Button isLoading={loading} width={'full'} my={'4'} type='submit' colorScheme={'yellow'} children={'Update'} />
+          <Button isLoading={loading} width={'full'} my={'4'} type='submit' colorScheme={'pink'} children={'Update'} />
         </VStack>
       </form>
     </Container>

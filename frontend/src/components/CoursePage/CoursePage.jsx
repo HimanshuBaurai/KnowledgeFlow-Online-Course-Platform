@@ -28,7 +28,7 @@ const CoursePage = ({ user }) => {
                 <Grid minH={'90vh'} templateColumns={['1fr', '3fr 1fr']}>
                     <Box>
                         <video
-                            width={'100%'}
+                            width={'100%'} 
                             autoPlay
                             controls
                             controlsList='nodownload noremoteplayback'

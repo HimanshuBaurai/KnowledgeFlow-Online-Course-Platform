@@ -23,10 +23,12 @@ const Home = () => {
                     // className='container-stack'
                 >
                     <VStack width={'full'} alignItems={['center', 'flex-end']} spacing={'6'}>
-                        <Heading size={'2xl'} children='LEARN FROM THE EXPERTS' />
-                        <Text textAlign={['center','left']} fontFamily={'cursive'} children='Find Valuable Content At Reasonable Price' />
+                        <Heading size={'2xl'} children='IGNITE YOUR KNOWLEDGE' />
+                        {/* <Heading size={'2xl'} children='LEARN FROM THE EXPERTS' /> */}
+                        <Text textAlign={['center','left']} fontFamily={'cursive'} children='"Discover Premium Knowledge at Affordable Rates."' />
+                        {/* <Text textAlign={['center','left']} fontFamily={'cursive'} children='Find Valuable Content At Reasonable Price' /> */}
                         <Link to={'/courses'}>
-                            <Button size={'lg'} colorScheme='yellow'>
+                            <Button size={'lg'} colorScheme='pink'>
                                 Explore Now
                             </Button>
                         </Link>
@@ -38,7 +40,7 @@ const Home = () => {
                 <Heading
                     textAlign={'center'}
                     fontFamily={'body'}
-                    color={'yellow.400'}
+                    color={'pink.400'}
                     children='OUR PARTNERS'
                 />
                 <HStack className='brandsBanner' justifyContent={'space-evenly'} marginTop={'4'}>

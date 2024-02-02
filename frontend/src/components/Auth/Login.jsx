@@ -32,7 +32,7 @@ const Login = () => {
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder='abc@gmail.com'
                             type='email'
-                            focusBorderColor='yellow.400'
+                            focusBorderColor='pink.400'
                         />
                     </Box>
                     <Box my={'4'}>
@@ -44,7 +44,7 @@ const Login = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder='********'
                             type='password'
-                            focusBorderColor='yellow.400'
+                            focusBorderColor='pink.400'
                         />
                     </Box>
 
@@ -55,12 +55,12 @@ const Login = () => {
                         </Link>
                     </Box>
 
-                    <Button my={'4'} type='submit' colorScheme={'yellow'} children={'Login'} />
+                    <Button my={'4'} type='submit' colorScheme={'pink'} children={'Login'} />
 
                     <Box my={'4'}>
                         New User?{' '}
                         <Link to='/register'>
-                            <Button fontSize={'sm'} variant={'link'} children={'Sign Up'} colorScheme='purple' />
+                            <Button fontSize={'sm'} variant={'link'} children={'Sign Up'} colorScheme='green' />
                         </Link>
                         {' '} here
                     </Box> 

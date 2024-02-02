@@ -47,7 +47,7 @@ const TandC = ({ termsAndConditions }) => {
                 size={'md'}
                 textAlign={['center', 'left']}
                 fontFamily={'body'}
-                color={'yellow.400'}
+                color={'pink.400'}
                 children='Terms and Conditions'
             />
             <Box h='sm' p={'4'}>
@@ -71,9 +71,10 @@ const About = () => {
             <Founder />
 
             <Stack direction={['column', 'row']} alignItems={'center'} padding={'8'}>
-                <Text children={'We are a video streaming platform with some premium courses available only for premiuim users'} textAlign={['center', 'left']} fontFamily={'cursive'} />
+                <Text children={'Embark on a journey of knowledge and entertainment with our exclusive video streaming platform. Elevate your learning experience with a curated selection of premium courses, accessible only to our valued premium users. Unlock a world of insights, skill-building, and personal growth at your fingertips. Join our community and indulge in the best of education and entertainment, tailored just for you. Enrich your mind, empower your skills, and become a part of a platform that goes beyond streaming – its an immersive educational experience for our premium members.'} textAlign={['center', 'left']} fontFamily={'cursive'} />
+                {/* <Text children={'We are a video streaming platform with some premium courses available only for premiuim users'} textAlign={['center', 'left']} fontFamily={'cursive'} /> */}
                 <Link to={'/subscribe'}>
-                    <Button variant={'ghost'} colorScheme={'purple'} children={'Check Out Our Plans'} />
+                    <Button variant={'ghost'} colorScheme={'green'} children={'Check Out Our Plans'} />
                 </Link>
             </Stack>
 

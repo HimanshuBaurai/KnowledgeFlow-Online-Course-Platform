@@ -74,26 +74,26 @@ const CreateCourse = () => {
                             onChange={(e) => setTitle(e.target.value)}
                             placeholder='Title'
                             type='text'
-                            focusBorderColor='purple.400'
+                            focusBorderColor='green.400'
                         />
                         <Input
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             placeholder='Description'
                             type='text'
-                            focusBorderColor='purple.400'
+                            focusBorderColor='green.400'
                         />
                         <Input
                             value={createdBy}
                             onChange={(e) => setCreatedBy(e.target.value)}
                             placeholder='Creater Name'
                             type='text'
-                            focusBorderColor='purple.400'
+                            focusBorderColor='green.400'
                         />
                         <Select
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
-                            focusBorderColor='purple.400'
+                            focusBorderColor='green.400'
                         >
                             <option value=''>Select Category</option>
                             {
@@ -106,11 +106,11 @@ const CreateCourse = () => {
                             accept='image/*'
                             required
                             type='file'
-                            focusBorderColor='purple.400'
+                            focusBorderColor='green.400'
                             css={{
                                 '&::-webkit-file-upload-button': {
                                     ...fileUploadCss,
-                                    color: 'purple',
+                                    color: 'green',
                                 }
                             }}
                             onChange={changeImageHandler}
@@ -120,7 +120,7 @@ const CreateCourse = () => {
                                 <Image src={imagePreview} boxSize={'64'} alt={title} objectFit={'contain'} />
                             )
                         }
-                        <Button isLoading={loading} width={'full'} my={'4'} type='submit' colorScheme={'purple'} children={'Create'} />
+                        <Button isLoading={loading} width={'full'} my={'4'} type='submit' colorScheme={'green'} children={'Create'} />
                     </VStack>
                 </form>
             </Container>

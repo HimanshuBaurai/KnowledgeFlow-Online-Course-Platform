@@ -13,7 +13,7 @@ const Footer = () => {
                         fontFamily={'body'}
                         size={'sm'}
                         children='© 2024'
-                        color={'yellow.400'}
+                        color={'pink.400'}
                     />
                 </VStack>
                 <HStack spacing={['2', '10']} justifyContent={'center'}>

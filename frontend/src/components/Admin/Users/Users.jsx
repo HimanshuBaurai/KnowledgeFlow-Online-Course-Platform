@@ -20,8 +20,8 @@ const Row = ({ item, updateHandler, deleteButtonHandler, loading }) => {
             <Td>{item.subscription && item.subscription.status === 'active' ? 'Active' : 'Not Active'}</Td>
             <Td isNumeric>
                 <HStack justifyContent={'flex-end'}>
-                    <Button isLoading={loading} variant={'outline'} colorScheme={'purple'} onClick={() => updateHandler(item._id)}>Change Role</Button>
-                    <Button isLoading={loading} color={'purple.600'} onClick={() => deleteButtonHandler(item._id)}>
+                    <Button isLoading={loading} variant={'outline'} colorScheme={'green'} onClick={() => updateHandler(item._id)}>Change Role</Button>
+                    <Button isLoading={loading} color={'green.600'} onClick={() => deleteButtonHandler(item._id)}>
                         <RiDeleteBin7Fill />
                     </Button>
 
