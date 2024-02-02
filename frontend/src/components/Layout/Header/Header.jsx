@@ -13,6 +13,8 @@ import React from 'react';
 import { ColorModeSwitcher } from '../../../ColorModeSwitcher';
 import { RiDashboardFill, RiLogoutBoxLine, RiMenu5Fill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../../redux/Actions/userAction';
 //   import { useDispatch } from 'react-redux';
 //   import { logout } from '../../../redux/actions/user';
 
@@ -24,19 +26,22 @@ const LinkButton = ({ url = '/', title = 'Home', onClose }) => (
 
 
 
-const Header = ({ isAuthenticated = false, user }) => {
+const Header = ({ isAuthenticated=false, user }) => {
+  //we will be passing above 2 paracmeters by accessing redux store in app.js and send them as parameters to header
+
+
   //testing isAuthenticated
-  isAuthenticated=true;
+  // isAuthenticated=false;
   //testing user
-  user={role:'admin'};
+  // user={role:'admin'};
 
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
   const logoutHandler = () => {
     onClose();
-    // dispatch(logout());
+    dispatch(logout());//dispatching logout action
   };
 
   return (
@@ -45,7 +50,7 @@ const Header = ({ isAuthenticated = false, user }) => {
 
       <Button
         onClick={onOpen}
-        colorScheme={'yellow'}
+        colorScheme={'pink'}
         width="12"
         height={'12'}
         rounded="full"
@@ -89,7 +94,7 @@ const Header = ({ isAuthenticated = false, user }) => {
                     <VStack>
                       <HStack>
                         <Link onClick={onClose} to="/profile">
-                          <Button variant={'ghost'} colorScheme={'yellow'}>
+                          <Button variant={'ghost'} colorScheme={'pink'}>
                             Profile
                           </Button>
                         </Link>
@@ -102,7 +107,7 @@ const Header = ({ isAuthenticated = false, user }) => {
 
                       {user && user.role === 'admin' && (
                         <Link onClick={onClose} to="/admin/dashboard">
-                          <Button colorScheme={'purple'} variant="ghost">
+                          <Button colorScheme={'green'} variant="ghost">
                             <RiDashboardFill style={{ margin: '4px' }} />
                             Dashboard
                           </Button>
@@ -113,13 +118,13 @@ const Header = ({ isAuthenticated = false, user }) => {
                 ) : (
                   <>
                     <Link onClick={onClose} to="/login">
-                      <Button colorScheme={'yellow'}>Login</Button>
+                      <Button colorScheme={'pink'}>Login</Button>
                     </Link>
 
                     <p>OR</p>
 
                     <Link onClick={onClose} to="/register">
-                      <Button colorScheme={'yellow'}>Sign Up</Button>
+                      <Button colorScheme={'pink'}>Sign Up</Button>
                     </Link>
                   </>
                 )}

@@ -4,14 +4,14 @@ import { RiDeleteBin7Fill } from 'react-icons/ri'
 import { fileUploadCss } from '../../Auth/Register'
 
 
-const VideoCard = ({ title, description, num, lectureId, courseId, deleteButtonHandler }) => {
+const VideoCard = ({ title, description, num, lectureId, courseId, loading, deleteButtonHandler }) => {
     return (
-        <Stack direction={['column', 'row']} my={'8'} borderRadius={'lg'} boxShadow={'0 0 10px rgba(107,70,193,0.5)'} justifyContent={['flex-start','space-between']} p={['4', '8']}>
+        <Stack direction={['column', 'row']} my={'8'} borderRadius={'lg'} boxShadow={'0 0 10px rgba(107,70,193,0.5)'} justifyContent={['flex-start', 'space-between']} p={['4', '8']}>
             <Box>
                 <Heading size={'sm'} children={`#${num} ${title}`} />
                 <Text children={description} />
             </Box>
-            <Button color={'purple.600'} onClick={() => deleteButtonHandler(lectureId, courseId)}>
+            <Button isLoading={loading} color={'green.600'} onClick={() => deleteButtonHandler(lectureId, courseId)}>
                 <RiDeleteBin7Fill />
             </Button>
         </Stack>
@@ -19,7 +19,7 @@ const VideoCard = ({ title, description, num, lectureId, courseId, deleteButtonH
 }
 
 
-const CourseModal = ({ isOpen, onClose, courseTitle, id, deleteButtonHandler, addLectureHandler, lecture = [] }) => {
+const CourseModal = ({ isOpen, onClose, courseTitle, id, loading, deleteButtonHandler, addLectureHandler, lectures = [] }) => {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [video, setVideo] = useState()
@@ -29,6 +29,7 @@ const CourseModal = ({ isOpen, onClose, courseTitle, id, deleteButtonHandler, ad
         const file = e.target.files[0];
         const reader = new FileReader();
         reader.readAsDataURL(file);
+        
         reader.onload = () => {
             if (reader.readyState === 2) {
                 setVideoPreview(reader.result);
@@ -61,27 +62,33 @@ const CourseModal = ({ isOpen, onClose, courseTitle, id, deleteButtonHandler, ad
                                 <Heading children={`#${id}`} size={'sm'} opacity={0.4} />
                             </Box>
                             <Heading children={'Lectures'} size={'lg'} />
-                            <VideoCard
-                                title={'React Introduction'}
-                                description={'This is the introduction to the React course'}
-                                num={1}
-                                lectureId={'abhgshvnbvdcgndv'}
-                                courseId={id}
-                                deleteButtonHandler={deleteButtonHandler}
-                            />
+                            {
+                                lectures.map((item, i) => (
+                                    <VideoCard
+                                        key={i}
+                                        title={item.title}
+                                        description={item.description}
+                                        num={i + 1}
+                                        lectureId={item._id}
+                                        courseId={id}
+                                        loading={loading}
+                                        deleteButtonHandler={deleteButtonHandler}
+                                    />
+                                ))
+                            }
                         </Box>
                         <Box>
                             <form onSubmit={(e) => addLectureHandler(e, id, title, description, video)}>
                                 <VStack spacing={'4'}>
                                     <Heading children={'Add Lecture'} size={'md'} textTransform={'uppercase'} />
                                     <Input
-                                        focusBorderColor='purple.400'
+                                        focusBorderColor='green.400'
                                         placeholder='Title'
                                         value={title}
                                         onChange={(e) => setTitle(e.target.value)}
                                     />
                                     <Input
-                                        focusBorderColor='purple.400'
+                                        focusBorderColor='green.400'
                                         placeholder='Description'
                                         value={description}
                                         onChange={(e) => setDescription(e.target.value)}
@@ -89,12 +96,12 @@ const CourseModal = ({ isOpen, onClose, courseTitle, id, deleteButtonHandler, ad
                                     <Input
                                         accept='video/mp4'
                                         required
-                                        type='file'
-                                        focusBorderColor='purple.400'
+                                        type={'file'}
+                                        focusBorderColor='green.400'
                                         css={{
                                             '&::-webkit-file-upload-button': {
                                                 ...fileUploadCss,
-                                                color: 'purple',
+                                                color: 'green',
                                             }
                                         }}
                                         onChange={changeVideoHandler}
@@ -102,7 +109,7 @@ const CourseModal = ({ isOpen, onClose, courseTitle, id, deleteButtonHandler, ad
                                     {
                                         videoPreview && <video controlsList='noDownload' src={videoPreview} controls width={'full'} />
                                     }
-                                    <Button w={'full'} type='submit' colorScheme='purple' children={'Upload'} />
+                                    <Button isLoading={loading} w={'full'} type='submit' colorScheme='green' children={'Upload'} />
                                 </VStack>
                             </form>
                         </Box>

@@ -8,7 +8,7 @@ import { Link, useLocation } from 'react-router-dom'
 const LinkButton = ({ url, Icon, text, active }) => {
     return (
         <Link to={`/admin/${url}`}>
-            <Button colorScheme={active ? 'purple' : ''} fontSize={'larger'} variant={'ghost'}>
+            <Button colorScheme={active ? 'green' : ''} fontSize={'larger'} variant={'ghost'}>
                 <Icon style={{ margin: '4px' }} /> {text}
             </Button>
         </Link>

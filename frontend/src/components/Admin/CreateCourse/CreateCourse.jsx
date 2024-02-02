@@ -1,8 +1,11 @@
-import { Box, Button, Container, Grid, Heading, Image, Input, Select, VStack } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import { Button, Container, Grid, Heading, Image, Input, Select, VStack } from '@chakra-ui/react'
+import React, { useEffect, useState } from 'react'
 import cursor from '../../../assets/images/cursor.png'
 import SideBar from '../SideBar'
 import { fileUploadCss } from '../../Auth/Register'
+import { useDispatch, useSelector } from 'react-redux'
+import { createCourse } from '../../../redux/Actions/adminAction'
+import toast from 'react-hot-toast'
 
 const CreateCourse = () => {
     const [title, setTitle] = useState('')
@@ -26,6 +29,31 @@ const CreateCourse = () => {
         };
     };
 
+
+    const dispatch = useDispatch();
+    const { loading, error, message } = useSelector(state => state.admin);
+    const submitHandler = (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('createdBy', createdBy);
+        formData.append('category', category);
+        formData.append('file', image);
+        dispatch(createCourse(formData));
+    }
+
+    useEffect(() => {
+        if (error) {
+            toast.error(error);
+            dispatch({ type: 'clearError' });
+        }
+        if (message) {
+            toast.success(message);
+            dispatch({ type: 'clearMessage' });
+        }
+    }, [error, message, dispatch])
+
     return (
         <Grid
             templateColumns={['1fr', '5fr 1fr']}
@@ -33,7 +61,7 @@ const CreateCourse = () => {
             css={{ cursor: `url(${cursor}), default` }}
         >
             <Container py={'16'}>
-                <form>
+                <form onSubmit={submitHandler}>
                     <Heading
                         textTransform={'uppercase'}
                         children={'Create Course'}
@@ -46,26 +74,26 @@ const CreateCourse = () => {
                             onChange={(e) => setTitle(e.target.value)}
                             placeholder='Title'
                             type='text'
-                            focusBorderColor='purple.400'
+                            focusBorderColor='green.400'
                         />
                         <Input
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             placeholder='Description'
                             type='text'
-                            focusBorderColor='purple.400'
+                            focusBorderColor='green.400'
                         />
                         <Input
                             value={createdBy}
                             onChange={(e) => setCreatedBy(e.target.value)}
                             placeholder='Creater Name'
                             type='text'
-                            focusBorderColor='purple.400'
+                            focusBorderColor='green.400'
                         />
                         <Select
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
-                            focusBorderColor='purple.400'
+                            focusBorderColor='green.400'
                         >
                             <option value=''>Select Category</option>
                             {
@@ -78,11 +106,11 @@ const CreateCourse = () => {
                             accept='image/*'
                             required
                             type='file'
-                            focusBorderColor='purple.400'
+                            focusBorderColor='green.400'
                             css={{
                                 '&::-webkit-file-upload-button': {
                                     ...fileUploadCss,
-                                    color: 'purple',
+                                    color: 'green',
                                 }
                             }}
                             onChange={changeImageHandler}
@@ -92,7 +120,7 @@ const CreateCourse = () => {
                                 <Image src={imagePreview} boxSize={'64'} alt={title} objectFit={'contain'} />
                             )
                         }
-                        <Button width={'full'} my={'4'} type='submit' colorScheme={'purple'} children={'Create'} />
+                        <Button isLoading={loading} width={'full'} my={'4'} type='submit' colorScheme={'green'} children={'Create'} />
                     </VStack>
                 </form>
             </Container>

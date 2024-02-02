@@ -13,21 +13,21 @@ const getLastYearMonths = () => {
     'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
   ];
   const currentMonth = new Date().getMonth(); //current month
-  const remain = 11 - currentMonth;//remaining months
+  // const remain = 11 - currentMonth;//remaining months
 
-  for (let i = currentMonth; i>=0; i--) {
+  for (let i = currentMonth; i >= 0; i--) {
     const element = months[i];
     labels.unshift(element);
   }
-  for(let i=11; i>currentMonth; i--){
+  for (let i = 11; i > currentMonth; i--) {
     const element = months[i];
     labels.unshift(element);
-  }  
+  }
   return labels;
 }
 
 
-export const LineChart = () => { 
+export const LineChart = ({dataArray=[]}) => {
   const labels = getLastYearMonths();
   const options = {
     resposive: true,
@@ -46,7 +46,7 @@ export const LineChart = () => {
     datasets: [
       {
         label: 'Views',
-        data: [1, 2, 3, 4, 5, 6],
+        data: dataArray,
         borderColor: 'rgba(107, 70, 193, 0.5)',
         backgroundColor: '#6b46c1',
       },
@@ -59,20 +59,21 @@ export const LineChart = () => {
 }
 
 
-export const DoughnutChart = () => {
+export const DoughnutChart = ({ dataArray = [] }) => {
   const labels = ['Subscribed', 'Not Subscribed']; // labels for the chart
   const data = {
     labels: labels,
     datasets: [
       {
         label: 'Views',
-        data: [3, 10],
+        data: dataArray,
         borderColor: ['rgba(62,12,171,1)', 'rgba(214,43,129,1)'],
         backgroundColor: ['rgba(62,12,171,0.3)', 'rgba(214,43,129,0.3)'], // colors for the chart
         borderWidth: 1,
       },
     ],
   }// data for the chart
+  // dataArray  is an array of two elements, first element is the number of subscribed users and second element is the number of unsubscribed users
 
   return (
     <Doughnut data={data} />

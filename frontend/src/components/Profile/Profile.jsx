@@ -1,14 +1,18 @@
 import { Avatar, Button, Container, HStack, Heading, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text, VStack, useDisclosure } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RiDeleteBin7Fill } from 'react-icons/ri'
 import { Link } from 'react-router-dom'
 import { fileUploadCss } from '../Auth/Register'
+import { removeFromPlaylist, updateProfilePicture } from '../../redux/Actions/profileAction'
+import { useDispatch, useSelector } from 'react-redux'
+import { cancelSubscription, loadUser } from '../../redux/Actions/userAction'
+import toast from 'react-hot-toast'
 
 
 
 
 //see documentation of chakra ui, it pops up a modal box on clicking the button below it 
-const ChangePhotoBox = ({ isOpen, onClose, changeImageSubmitHandler }) => {
+const ChangePhotoBox = ({ isOpen, onClose, changeImageSubmitHandler, loading }) => {
     const [imagePreview, setImagePreview] = useState('');
     const [image, setImage] = useState('');
 
@@ -47,7 +51,7 @@ const ChangePhotoBox = ({ isOpen, onClose, changeImageSubmitHandler }) => {
                                     css={{ '&::file-selector-button': fileUploadCss }}
                                     onChange={changeImageHandler}
                                 />
-                                <Button w={'full'} type='submit' colorScheme='yellow' children='Change' />
+                                <Button isLoading={loading} w={'full'} type='submit' colorScheme='pink' children='Change' />
                             </VStack>
                         </form>
                     </Container>
@@ -67,32 +71,70 @@ const ChangePhotoBox = ({ isOpen, onClose, changeImageSubmitHandler }) => {
 
 
 
-const Profile = () => {
-    const user = {
-        name: 'sample',
-        email: 'abc@gmail.com',
-        createdAt: String(new Date().toISOString()),
-        role: 'user',
-        subscription: {
-            status: 'inactive',
-        },
-        playlist: [
-            {
-                course: 'vgvbvb',//denotes course id
-                poster: 'https://th.bing.com/th/id/OIP.l8kGzfQsw5dPihvVhPO-5wHaHa?w=680&h=680&rs=1&pid=ImgDetMain',
-            }
-        ]
-    }
+const Profile = ({ user }) => {
+    //temp data
+    // const user = {
+    //     name: 'sample',
+    //     email: 'abc@gmail.com',
+    //     createdAt: String(new Date().toISOString()),
+    //     role: 'user',
+    //     subscription: {
+    //         status: 'inactive',
+    //     },
+    //     playlist: [
+    //         {
+    //             course: 'vgvbvb',//denotes course id
+    //             poster: 'https://th.bing.com/th/id/OIP.l8kGzfQsw5dPihvVhPO-5wHaHa?w=680&h=680&rs=1&pid=ImgDetMain',
+    //         }
+    //     ]
+    // }
 
-    const removeFromPlaylistHandler = (courseId) => {
-        console.log(courseId);
-    }
 
     const { isOpen, onOpen, onClose } = useDisclosure();//to keep a track of whether the modal is open or not
 
-    const changeImageSubmitHandler = (e, image) => {
+    const dispatch = useDispatch();
+    const { loading, message, error } = useSelector(state => state.profile);
+    const { loading: subscriptionLoading, error: subscriptionError, message: subscriptionMessage } = useSelector(state => state.subscription);
+
+
+    const removeFromPlaylistHandler = async (courseId) => {
+        await dispatch(removeFromPlaylist(courseId));
+        dispatch(loadUser());
+    }
+
+
+    const changeImageSubmitHandler = async (e, image) => {
         e.preventDefault();
-        console.log(image);
+
+        const myForm = new FormData();
+        myForm.append('file', image); //file is the key and image is the value
+        await dispatch(updateProfilePicture(myForm));
+        dispatch(loadUser());
+    };
+
+    useEffect(() => {
+        if (error) {
+            toast.error(error);
+            dispatch({ type: 'clearError' });
+        }
+        if (message) {
+            toast.success(message);
+            dispatch({ type: 'clearMessage' });
+        }
+
+        if (subscriptionError) {
+            toast.error(subscriptionError);
+            dispatch({ type: 'clearError' });
+        }
+        if (subscriptionMessage) {
+            toast.success(subscriptionMessage);
+            dispatch({ type: 'clearMessage' });
+            dispatch(loadUser());
+        }
+    }, [dispatch, message, error, subscriptionMessage, subscriptionError]);
+
+    const cancelSubscriptionHandler = async () => {
+        await dispatch(cancelSubscription());
     }
 
     return (
@@ -106,8 +148,8 @@ const Profile = () => {
                 padding={'8'}
             >
                 <VStack>
-                    <Avatar boxSize={'48'} />
-                    <Button onClick={onOpen} colorScheme='yellow' variant={'ghost'} children='Change Profile Picture' />
+                    <Avatar boxSize={'48'} src={user.avatar.url} />
+                    <Button onClick={onOpen} colorScheme='pink' variant={'ghost'} children='Change Profile Picture' />
                 </VStack>
 
                 <VStack spacing={'4'} alignItems={['center', 'flex-start']}>
@@ -128,8 +170,8 @@ const Profile = () => {
                             <HStack>
                                 <Text children='Subscription:' fontWeight={'bold'} />
                                 {
-                                    user.subscription.status === 'active' ? (
-                                        <Button colorScheme='red' children='Cancel Subscription' />
+                                    user.subscription && user.subscription.status === 'active' ? (
+                                        <Button isLoading={subscriptionLoading} onClick={cancelSubscriptionHandler} colorScheme='red' children='Cancel Subscription' />
                                     ) : (
                                         <Link to='/subscribe'>
                                             <Button colorScheme='green' variant={'ghost'} children='Subscribe' />
@@ -146,10 +188,10 @@ const Profile = () => {
                         direction={['column', 'row']}
                     >
                         <Link to='/updateprofile'>
-                            <Button colorScheme='yellow' children='Update Profile' />
+                            <Button colorScheme='pink' children='Update Profile' />
                         </Link>
                         <Link to='/changepassword'>
-                            <Button colorScheme='yellow' children='Change Password' />
+                            <Button colorScheme='pink' children='Change Password' />
                         </Link>
                     </Stack>
                 </VStack>
@@ -173,9 +215,9 @@ const Profile = () => {
                                     />
                                     <HStack>
                                         <Link to={`/course/${item.course}`}>
-                                            <Button variant={'ghost'} colorScheme={'yellow'} children='Watch Now' />
+                                            <Button variant={'ghost'} colorScheme={'pink'} children='Watch Now' />
                                         </Link>
-                                        <Button variant={'ghost'} colorScheme={'red'} onClick={() => removeFromPlaylistHandler(item.course)}>
+                                        <Button isLoading={loading} variant={'ghost'} colorScheme={'red'} onClick={() => removeFromPlaylistHandler(item.course)}>
                                             <RiDeleteBin7Fill />
                                             <Text children='Remove from Playlist' />
                                         </Button>
@@ -189,7 +231,7 @@ const Profile = () => {
                     )
             }
 
-            <ChangePhotoBox isOpen={isOpen} onClose={onClose} changeImageSubmitHandler={changeImageSubmitHandler} />
+            <ChangePhotoBox isOpen={isOpen} onClose={onClose} changeImageSubmitHandler={changeImageSubmitHandler} loading={loading} />
         </Container>
     )
 }

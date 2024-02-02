@@ -1,6 +1,8 @@
 import { Avatar, Box, Button, Container, FormLabel, Heading, Input, VStack } from '@chakra-ui/react'
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { register } from '../../redux/Actions/userAction';
 
 
 export const fileUploadCss = {
@@ -24,6 +26,8 @@ const Register = () => {
     const [image, setImage] = useState('');
     const [password, setPassword] = useState('');
 
+    const dispatch=useDispatch();
+
     const changeImageHandler = (e) => {
         const file = e.target.files[0];
         const reader = new FileReader();
@@ -36,12 +40,22 @@ const Register = () => {
         };
     };
 
+    const submitHandler = (e) => {
+        e.preventDefault();
+        const myForm = new FormData();
+        myForm.append('name', name);
+        myForm.append('email', email);
+        myForm.append('password', password);
+        myForm.append('file', image); //file is the key and image is the value
+        dispatch(register(myForm));
+    }
+
     return (
         <Container h={'100vh'}>
             <VStack h={'full'} justifyContent={'center'} spacing={'10'}>
                 <Heading children={'Registration'} textTransform={'uppercase'} />
 
-                <form style={{ width: '100%' }}>
+                <form onSubmit={submitHandler} style={{ width: '100%' }}>
 
                     <Box my={'4'} justifyContent={'center'} display={'flex'}>
                         <Avatar size={'2xl'} src={imagePreview} />
@@ -55,7 +69,7 @@ const Register = () => {
                             onChange={(e) => setName(e.target.value)}
                             placeholder='John Doe'
                             type='text'
-                            focusBorderColor='yellow.400'
+                            focusBorderColor='pink.400'
                         />
                     </Box>
                     <Box my={'4'}>
@@ -67,7 +81,7 @@ const Register = () => {
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder='abc@gmail.com'
                             type='email'
-                            focusBorderColor='yellow.400'
+                            focusBorderColor='pink.400'
                         />
                     </Box>
                     <Box my={'4'}>
@@ -79,7 +93,7 @@ const Register = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder='********'
                             type='password'
-                            focusBorderColor='yellow.400'
+                            focusBorderColor='pink.400'
                         />
                     </Box>
                     <Box my={'4'}>
@@ -89,18 +103,18 @@ const Register = () => {
                             required
                             id='chooseAvatar'
                             type='file'
-                            focusBorderColor='yellow.400'
+                            focusBorderColor='pink.400'
                             css={fileUploadStyle}
                             onChange={changeImageHandler}
                         />
                     </Box>
 
-                    <Button my={'4'} type='submit' colorScheme={'yellow'} children={'Sign Up'} />
+                    <Button my={'4'} type='submit' colorScheme={'pink'} children={'Sign Up'} />
 
                     <Box my={'4'}>
                         Registered User?{' '}
                         <Link to='/login'>
-                            <Button fontSize={'sm'} variant={'link'} children={'Login'} colorScheme='purple' />
+                            <Button fontSize={'sm'} variant={'link'} children={'Login'} colorScheme='green' />
                         </Link>
                         {' '} here
                     </Box>

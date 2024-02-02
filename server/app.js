@@ -37,3 +37,8 @@ app.get('/', (req, res, next) => {
 });//this is just for testing, we will remove this later
 
 app.use(ErrorMiddleware);//ErrorMiddleware is imported from server/middlewares/Error.js
+
+
+//chenges done to work on local machine and modify css
+//env variable frontend url replaced to localhost:3000 instead of https://knowledgeflow.vercel.app/
+// changed frontend url env entry on render to localhost:3000
