@@ -3,6 +3,8 @@ import { profileReducer, subscriptionReducer, userReducer } from './Reducers/use
 import { courseReducer } from './Reducers/courseReducer';
 import { adminReducer } from './Reducers/adminReducer';
 import { otherReducer } from './Reducers/otherReducer';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const store = configureStore({
     reducer: {
@@ -16,5 +18,5 @@ const store = configureStore({
 })
 
 export default store;
-// export const ServerURL = "https://knowledge-flow-online-course-platform.vercel.app/api/v1";
-export const ServerURL = "https://knowledgeflow-server.onrender.com/api/v1";
+
+export const ServerURL = process.env.SERVER_URL || 'http://localhost:4000/api/v1';
