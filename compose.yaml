@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  frontend:
+    build: frontend
+    ports:
+      - 3000:3000
+    networks:
+      - mern
+    depends_on:
+      - backend
+  backend:
+    build: server
+    ports:
+      - 4000:4000
+    networks:
+      - mern
+networks:
+  mern:
+    driver: bridge
