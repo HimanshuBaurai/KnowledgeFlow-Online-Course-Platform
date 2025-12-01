@@ -8,7 +8,7 @@
     "dev": "nodemon server.js",
     "start": "node server.js"
   },
-  "author": "Himanshu Baurai",
+  "author": "Kanishq",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
