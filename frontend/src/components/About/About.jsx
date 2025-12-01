@@ -2,7 +2,7 @@ import { Avatar, Box, Button, Container, HStack, Heading, Stack, Text, VStack } 
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import dp from '../../assets/images/profilePic.jpg'
+import dp from '../../assets/images/WhatsApp Image 2025-12-01 at 8.41.38 PM.jpeg'
 import Intro from '../../assets/videos/Intro.mp4'
 import data from '../../assets/docs/termsAndCondition'
 import { RiSecurePaymentFill } from 'react-icons/ri'
@@ -16,7 +16,7 @@ const Founder = () => {
                 <Text children={'Co-Founder'} opacity={0.7} />
             </VStack>
             <VStack justifyContent={'center'} alignItems={['center', 'flex-start']}>
-                <Heading children={'Himanshu Baurai'} size={['md', 'xl']} />
+                <Heading children={'Kanishq'} size={['md', 'xl']} />
                 <Text children={'Hi, I am a full stack developer and a tech enthusiast. Our aim is to make things simple to use but  yet elegant and functional in all aspects.'} textAlign={['center', 'left']} />
             </VStack>
         </Stack>

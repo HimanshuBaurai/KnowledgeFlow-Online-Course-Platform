@@ -17,13 +17,13 @@ const Footer = () => {
                     />
                 </VStack>
                 <HStack spacing={['2', '10']} justifyContent={'center'}>
-                    <Link to={'https://linkedin.com/in/himanshu-baurai-283b4022a'} target='_blank' rel='noreferrer'>
+                    <Link to={'https://www.linkedin.com/in/kanishq-choudhary-62065b224'} target='_blank' rel='noreferrer'>
                         <TiSocialLinkedinCircular size={'2rem'} color={'white'} />
                     </Link>
-                    <Link to={'https://instagram.com/himanshu_baurai'} target='_blank' rel='noreferrer'>
+                    <Link to={'https://instagram.com/kanishq_23'} target='_blank' rel='noreferrer'>
                         <TiSocialInstagramCircular size={'2rem'} color={'white'} />
                     </Link>
-                    <Link to={'https://github.com/HimanshuBaurai'} target='_blank' rel='noreferrer'>
+                    <Link to={'https://github.com/Kanishq2324'} target='_blank' rel='noreferrer'>
                         <TiSocialGithub size={'2rem'} color={'white'} />
                     </Link>
                 </HStack>
